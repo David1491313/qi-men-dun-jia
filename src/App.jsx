@@ -23,11 +23,13 @@ const JIEQI_C = {
   '白露':7.646,'秋分':23.042,'寒露':8.318,'霜降':23.438,
   '立冬':7.438,'小雪':22.36,'大雪':7.18,'冬至':21.94
 };
+
 const JIEQI_ORDER = [
   ['小寒','大寒'],['立春','雨水'],['驚蟄','春分'],['清明','穀雨'],
   ['立夏','小滿'],['芒種','夏至'],['小暑','大暑'],['立秋','處暑'],
   ['白露','秋分'],['寒露','霜降'],['立冬','小雪'],['大雪','冬至']
 ];
+
 const JU_TABLE = {
   '冬至':[1,7,4],'驚蟄':[1,7,4],'小寒':[2,8,5],'大寒':[3,9,6],'春分':[3,9,6],
   '立春':[8,5,2],'雨水':[9,6,3],'清明':[4,1,7],'立夏':[4,1,7],
@@ -38,12 +40,14 @@ const JU_TABLE = {
 };
 
 const JIEQI_CORRECTIONS = { '2026_驚蟄': 6 };
+
 function calcJieQiDay(year, jqName) {
   const key = `${year}_${jqName}`;
   if (JIEQI_CORRECTIONS[key] !== undefined) return JIEQI_CORRECTIONS[key];
   const C = JIEQI_C[jqName]; const Y = year % 100; const L = Math.floor(Y / 4);
   return Math.floor(Y * 0.2422 + C) - L;
 }
+
 function getJieQiForMonth(year, month) {
   const pair = JIEQI_ORDER[month - 1];
   return [
@@ -53,12 +57,12 @@ function getJieQiForMonth(year, month) {
 }
 
 // ===== 置閏法：機械式節氣系統 =====
-// 以離冬至/夏至最近的符頭(甲子/己卯/甲午/己酉)為起點，每15天切換節氣
 const YANG_SEQ = ['冬至','小寒','大寒','立春','雨水','驚蟄','春分','清明','穀雨','立夏','小滿','芒種'];
 const YIN_SEQ = ['夏至','小暑','大暑','立秋','處暑','白露','秋分','寒露','霜降','立冬','小雪','大雪'];
-
 const REF_DATE = new Date(2000, 0, 7); REF_DATE.setHours(12,0,0,0);
+
 function toAbsDay(y,m,d){ const dt=new Date(y,m-1,d); dt.setHours(12,0,0,0); return Math.round((dt-REF_DATE)/86400000); }
+
 function getFutouAbs(solsticeAbs) {
   const idx60 = ((solsticeAbs % 60) + 60) % 60;
   const offset = idx60 % 15;
@@ -77,14 +81,12 @@ function determineZhiRunJu(year, month, day) {
   candidates.sort((a,b) => a.abs - b.abs);
   let chosen = candidates[0];
   for (const c of candidates) { if (c.abs <= targetAbs) chosen = c; }
-
   const daysFromStart = targetAbs - chosen.abs;
   const jqIndex = Math.min(Math.floor(daysFromStart / 15), 11);
   const dayInJQ = daysFromStart - jqIndex * 15;
   const yuan = Math.min(Math.floor(dayInJQ / 5), 2);
   const jqSeq = chosen.isYang ? YANG_SEQ : YIN_SEQ;
   const jq = jqSeq[jqIndex];
-
   return {
     isYangDun: chosen.isYang, juShu: JU_TABLE[jq][yuan],
     jieQi: jq, yuan: ['上元','中元','下元'][yuan], jqDay: dayInJQ + 1,
@@ -94,7 +96,6 @@ function determineZhiRunJu(year, month, day) {
 
 // ===== 天文節氣法（日家用）=====
 function determineYinYangDun(year, month, day) {
-  const YANG_JQ = ['冬至','小寒','大寒','立春','雨水','驚蟄','春分','清明','穀雨','立夏','小滿','芒種'];
   let currentJQ = '', jqDay = 0;
   const jqList = getJieQiForMonth(year, month);
   for (let jq of jqList) { if (day >= jq.day) { currentJQ = jq.name; jqDay = day - jq.day + 1; } }
@@ -104,7 +105,7 @@ function determineYinYangDun(year, month, day) {
     const lastDay = new Date(year, month - 1, 0).getDate();
     jqDay = day + (lastDay - prev[1].day) + 1;
   }
-  const isYangDun = YANG_JQ.includes(currentJQ);
+  const isYangDun = YANG_SEQ.includes(currentJQ);
   let yuanIdx = Math.floor((jqDay - 1) / 5); if (yuanIdx > 2) yuanIdx = 2;
   return { isYangDun, juShu: JU_TABLE[currentJQ]?.[yuanIdx] || 1, jieQi: currentJQ, yuan: ['上元','中元','下元'][yuanIdx], jqDay };
 }
@@ -117,7 +118,6 @@ const computeQiMen = (yStr, mStr, dStr, hStr, juSetting, system) => {
   let astroDate = new Date(`${y}-${mStr.padStart(2,'0')}-${dStr.padStart(2,'0')}T${hStr.padStart(2,'0')}:00:00+08:00`);
   let isNextDay = h>=23; if(isNextDay) astroDate.setDate(astroDate.getDate()+1);
   const astroHStr = isNextDay?'00':hStr.padStart(2,'0');
-
   let lunarM=1,lunarD=1,lunarYearStr='';
   try {
     let lcd=new Date(astroDate.getTime()); lcd.setHours(12,0,0,0);
@@ -126,7 +126,6 @@ const computeQiMen = (yStr, mStr, dStr, hStr, juSetting, system) => {
     const yp=new Intl.DateTimeFormat('zh-TW-u-ca-chinese',{year:'numeric',timeZone:'Asia/Taipei'}).formatToParts(lcd);
     lunarYearStr=yp.find(p=>p.type==='yearName')?.value||'';
   } catch(e){}
-
   const refDate = new Date(2000, 0, 7); refDate.setHours(12,0,0,0);
   const astroMid = new Date(astroDate.getTime()); astroMid.setHours(12,0,0,0);
   const diffDays = Math.round((astroMid - refDate) / 86400000);
@@ -134,7 +133,6 @@ const computeQiMen = (yStr, mStr, dStr, hStr, juSetting, system) => {
   const dGanIndex = dayIdx60 % 10, dZhiIndex = dayIdx60 % 12;
   const hZhiIndex = Math.floor((h+1)/2)%12;
   const hGanIndex = (dGanIndex*2+hZhiIndex)%10;
-
   const aY=astroDate.getFullYear(), aM=astroDate.getMonth()+1, aD=astroDate.getDate();
   let baziYear=aY, baziMonthZhi=aM;
   const jqTM = getJieQiForMonth(aY, aM);
@@ -148,68 +146,61 @@ const computeQiMen = (yStr, mStr, dStr, hStr, juSetting, system) => {
   const dispYGan=(aY-4+1000)%10, dispYZhi=(aY-4+1200)%12;
   const bazi = { y: GANS[dispYGan]+ZHIS[dispYZhi], m: GANS[mGanIndex]+ZHIS[baziMonthZhi], d: GANS[dGanIndex]+ZHIS[dZhiIndex], h: GANS[hGanIndex]+ZHIS[hZhiIndex] };
   const isWuBuYuShi = (hGanIndex-dGanIndex+10)%10===6;
-
   let tGanIndex,tZhiIndex;
   if(system==='6'){tGanIndex=dGanIndex;tZhiIndex=dZhiIndex;}
   else if(system==='4'){tGanIndex=mGanIndex;tZhiIndex=baziMonthZhi;}
   else if(system==='5'){tGanIndex=yGanIndex;tZhiIndex=yZhiIndex;}
   else{tGanIndex=hGanIndex;tZhiIndex=hZhiIndex;}
-
   let isYin, juNum, dunInfo = null;
   if(juSetting!=='auto'){
     isYin=juSetting.startsWith('yin'); juNum=parseInt(juSetting.replace('yin','').replace('yang',''));
   } else if(system==='1'){
     isYin=!isYinPanYangJu(aM,aD); juNum=((yZhiIndex+1)+lunarM+lunarD+(hZhiIndex+1))%9||9;
   } else if(system==='5'){
-    isYin=true; const yf=((baziYear-1864)%180+180)%180; juNum=[1,4,7][Math.floor(yf/60)];
+    // 年家：180年三元，局數整元固定，全用陰遁
+    isYin=true;
+    const yf=((baziYear-1864)%180+180)%180;
+    juNum=[1,4,7][Math.floor(yf/60)];
   } else if(system==='4'){
+    // 月家：統一公式，全用陰遁
     isYin=true;
     const mf = (baziYear - 2024) * 12 + (baziMonthZhi - 2 + 12) % 12;
     juNum = ((7 - Math.floor(mf / 10)) % 9 + 9) % 9 || 9;
   } else if(system==='6'){
-    // ===== 日家：陽遁順推、陰遁逆推，與時家完全獨立 =====
-    // 陰遁：以甲寅旬(idx50)為界分段，逆推局數
-    // 陽遁：順推局數
+    // 日家：陽遁順推、陰遁逆推，與時家完全獨立
     const di=determineYinYangDun(aY,aM,aD); isYin=!di.isYangDun; dunInfo=di;
     if(isYin){ const ref=dayIdx60>=50?60:30; juNum=((ref-dayIdx60)%9+9)%9||9; }
     else { juNum=(dayIdx60+4)%9||9; }
   } else {
-    // ===== 時家置閏：使用機械式節氣系統 =====
+    // 時家置閏：使用機械式節氣系統
     const di=determineZhiRunJu(aY,aM,aD);
     isYin=!di.isYangDun; juNum=di.juShu; dunInfo=di;
   }
-
   const earthPan=Array(10).fill(null);
   for(let i=0;i<9;i++){ let p=isYin?(juNum-i-1+9)%9+1:(juNum+i-1)%9+1; earthPan[p]=QI_GANS[i]; }
-
   const xunIndex=(tZhiIndex-tGanIndex+12)%12;
   const xunShouMap={0:4,10:5,8:6,6:7,4:8,2:9};
   const xunStem=xunShouMap[xunIndex]; const xunText='甲'+ZHIS[xunIndex];
   let fuPalace=earthPan.indexOf(xunStem); if(fuPalace===5)fuPalace=2;
-
   const heavenPan=Array(10).fill(null);
   const effStem=tGanIndex===0?xunStem:tGanIndex;
   let targetFuPalace=earthPan.indexOf(effStem); if(targetFuPalace===5)targetFuPalace=2;
   const starOffset=getRingIndex(targetFuPalace)-getRingIndex(fuPalace);
   const starTrace=[];
   for(let p of RING){ const tP=advanceRing(p,starOffset); heavenPan[tP]={star:p, stem:earthPan[p], fromPalace:p}; if(p===2&&earthPan[5]!==null)heavenPan[tP].extraStem=earthPan[5]; starTrace.push({sn:STARS[p],fp:p,tp:tP,st:GANS[earthPan[p]],ed:GANS[earthPan[tP]]}); }
-
   const doorPan=Array(10).fill(null);
   let steps=tGanIndex; if(tGanIndex===0)steps=0; let curP=fuPalace;
   for(let i=0;i<steps;i++){ curP+=(isYin?-1:1); if(curP>9)curP-=9; if(curP<1)curP+=9; }
   let targetShiPalace=curP; if(targetShiPalace===5)targetShiPalace=2;
   const doorOffset=getRingIndex(targetShiPalace)-getRingIndex(fuPalace);
   for(let p of RING){ doorPan[advanceRing(p,doorOffset)]=p; }
-
   const deityPan=Array(10).fill(null); const dSI=getRingIndex(targetFuPalace);
   for(let i=0;i<8;i++){ deityPan[RING[(dSI+(isYin?-i:i)+8)%8]]=DEITIES[i]; }
-
   const empty1=(xunIndex-2+12)%12, empty2=(xunIndex-1+12)%12;
   const b2p={0:1,1:8,2:8,3:3,4:4,5:4,6:9,7:2,8:2,9:7,10:6,11:6};
   const emptyPalaces=[b2p[empty1],b2p[empty2]];
   const horseMap={0:8,4:8,8:8,3:4,7:4,11:4,2:2,6:2,10:2,1:6,5:6,9:6};
   const horsePalace=horseMap[tZhiIndex];
-
   const outerStems=Array(10).fill('');
   if(system==='1'){
     let hpLoc=null;
@@ -219,13 +210,11 @@ const computeQiMen = (yStr, mStr, dStr, hStr, juSetting, system) => {
     const outerShift = starOffset - doorOffset;
     for(let p of RING){ const srcP = advanceRing(p, outerShift); let str = GANS[earthPan[srcP]]; if(srcP===2&&earthPan[5]!==null) str += GANS[earthPan[5]]; outerStems[p] = str; }
   }
-
   let yuanInfo = null;
   if(system==='5'&&juSetting==='auto'){ const yf=((baziYear-1864)%180+180)%180; const yi=Math.floor(yf/60); yuanInfo={yuan:['上元','中元','下元'][yi],startPalace:[1,4,7][yi],yearIn180:yf+1}; }
   else if(system==='4'&&juSetting==='auto'){ const myt=yZhiIndex%3; yuanInfo={yuan:['中元','下元','上元'][myt],yearBranchType:['四仲→中元','四季→下元','四孟→上元'][myt],yearBranch:ZHIS[yZhiIndex]}; }
-
   return {
-    bazi, lunar:`${lunarYearStr||bazi.y} 年 ${String(lunarM).padStart(2,'0')} 月 ${String(lunarD).padStart(2,'0')} 日`,
+    bazi, lunar: `${lunarYearStr||bazi.y} 年 ${String(lunarM).padStart(2,'0')} 月 ${String(lunarD).padStart(2,'0')} 日`,
     displayHStr:astroHStr, juText:(isYin?'陰':'陽')+juNum,
     xunText, fuText:GANS[xunStem], zhiFu:STARS[fuPalace], zhiShi:DOORS[fuPalace],
     earthPan,heavenPan,doorPan,deityPan,outerStems,
@@ -245,7 +234,6 @@ export default function QiMenDunJiaApp(){
   const [hour,setHour]=useState('13');const [minute,setMinute]=useState('22');
   const [system,setSystem]=useState('2');const [juSetting,setJuSetting]=useState('auto');
   const [showResult,setShowResult]=useState(false);const [calcData,setCalcData]=useState(null);const [showDebug,setShowDebug]=useState(false);
-
   const years=Array.from({length:200},(_,i)=>(1901+i).toString());
   const months=Array.from({length:12},(_,i)=>(i+1).toString().padStart(2,'0'));
   const getDIM=(y,m)=>new Date(parseInt(y),parseInt(m),0).getDate();
@@ -254,13 +242,11 @@ export default function QiMenDunJiaApp(){
   const minutes=Array.from({length:60},(_,i)=>i.toString().padStart(2,'0'));
   const juOpts=[{v:'auto',l:'自動計算'},...Array.from({length:9},(_,i)=>({v:`yang${i+1}`,l:`陽遁${i+1}局`})),...Array.from({length:9},(_,i)=>({v:`yin${i+1}`,l:`陰遁${i+1}局`}))];
   const sysMap={'1':'陰盤','2':'時家(置閏)','6':'日家','4':'月家','5':'年家'};
-
   useEffect(()=>{ if(showResult) setCalcData(computeQiMen(year,month,day,hour,juSetting,system)); },[year,month,day,hour,juSetting,system,showResult]);
   const handleNow=()=>{const n=new Date();setYear(n.getFullYear().toString());setMonth((n.getMonth()+1).toString().padStart(2,'0'));setDay(n.getDate().toString().padStart(2,'0'));setHour(n.getHours().toString().padStart(2,'0'));setMinute(n.getMinutes().toString().padStart(2,'0'));};
   const handleCalc=()=>{setCalcData(computeQiMen(year,month,day,hour,juSetting,system));setShowResult(true);};
   const qc=(t,a)=>{ let dt=new Date(parseInt(year),parseInt(month)-1,parseInt(day),parseInt(hour)); if(t==='day')dt.setDate(dt.getDate()+a); if(t==='hour')dt.setHours(dt.getHours()+a); if(t==='month')dt.setMonth(dt.getMonth()+a); if(t==='year')dt.setFullYear(dt.getFullYear()+a); setYear(dt.getFullYear().toString());setMonth((dt.getMonth()+1).toString().padStart(2,'0'));setDay(dt.getDate().toString().padStart(2,'0'));setHour(dt.getHours().toString().padStart(2,'0')); };
   const sel="border border-gray-300 rounded px-3 py-2 focus:ring-2 focus:ring-blue-200 focus:outline-none text-sm bg-white";
-
   const Cell=({p})=>{
     if(p===5)return <div className="border border-black bg-gray-50 flex items-center justify-center p-2"><span className="text-gray-300 text-sm">中₅</span></div>;
     const hp=calcData.heavenPan[p];
@@ -293,14 +279,12 @@ export default function QiMenDunJiaApp(){
       </div>
     );
   };
-
   const getNavButtons = () => {
     if(system==='5') return [['⬅ 上一年','year',-1],['下一年 ➡','year',1]];
     if(system==='4') return [['⬅ 上一月','month',-1],['下一月 ➡','month',1]];
     if(system==='6') return [['⬅ 上一日','day',-1],['下一日 ➡','day',1]];
     return [['⬅ 上一日','day',-1],['下一日 ➡','day',1],['⬆ 上一時','hour',-2],['下一時 ⬇','hour',2]];
   };
-
   return(
     <div className="min-h-screen bg-gray-50 text-gray-800 font-sans">
       <div className="max-w-2xl mx-auto p-4 bg-white shadow-sm min-h-screen">
@@ -393,4 +377,3 @@ export default function QiMenDunJiaApp(){
     </div>
   );
 }
-
