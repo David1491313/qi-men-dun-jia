@@ -8,6 +8,30 @@ const DOORS = [null,'休門','死門','傷門','杜門','中門','開門','驚�
 const DEITIES = ['值符','騰蛇','太陰','六合','白虎','玄武','九地','九天'];
 const RING = [1,8,3,4,9,2,7,6];
 const QI_GANS = [4,5,6,7,8,9,3,2,1];
+const CHANG_SHENG_STAGES = ['生','沐','冠','臨','旺','衰','病','死','墓','絕','胎','養'];
+const PALACE_BRANCHES = {
+  1:['子'], 8:['丑','寅'], 3:['卯'], 4:['辰','巳'],
+  9:['午'], 2:['未','申'], 7:['酉'], 6:['戌','亥']
+};
+// 十二長生起點。陽干順行、陰干逆行；戊同丙、己同丁。
+const CHANG_SHENG_START = {
+  '甲':'亥','乙':'午','丙':'寅','丁':'酉','戊':'寅',
+  '己':'酉','庚':'巳','辛':'子','壬':'申','癸':'卯'
+};
+
+function getChangShengForPalace(stem, palace) {
+  if (!stem || !PALACE_BRANCHES[palace]) return [];
+  const stemIndex = GANS.indexOf(stem);
+  const startIndex = ZHIS.indexOf(CHANG_SHENG_START[stem]);
+  const isForward = stemIndex % 2 === 0;
+  return PALACE_BRANCHES[palace].map(branch => {
+    const branchIndex = ZHIS.indexOf(branch);
+    const stageIndex = isForward
+      ? (branchIndex - startIndex + 12) % 12
+      : (startIndex - branchIndex + 12) % 12;
+    return { branch, stage: CHANG_SHENG_STAGES[stageIndex] };
+  });
+}
 
 const getRingIndex = p => RING.indexOf(p);
 const advanceRing = (p, steps) => RING[(getRingIndex(p) + steps + 64) % 8];
@@ -279,6 +303,8 @@ export default function QiMenDunJiaApp(){
   const [year,setYear]=useState('2026');const [month,setMonth]=useState('03');const [day,setDay]=useState('07');
   const [hour,setHour]=useState('13');const [minute,setMinute]=useState('22');
   const [system,setSystem]=useState('2');const [juSetting,setJuSetting]=useState('auto');
+  // 與校正來源一致，初次開盤預設顯示甲干十二長生。
+  const [changShengStem,setChangShengStem]=useState('甲');
   const [showResult,setShowResult]=useState(false);const [calcData,setCalcData]=useState(null);const [showDebug,setShowDebug]=useState(false);
 
   const years=Array.from({length:200},(_,i)=>(1901+i).toString());
@@ -302,11 +328,15 @@ export default function QiMenDunJiaApp(){
     let hStems=[]; if(hp?.stem!=null)hStems.push(GANS[hp.stem]); if(hp?.extraStem!=null)hStems.push(GANS[hp.extraStem]);
     let eStems=[GANS[calcData.earthPan[p]]]; if(p===2&&calcData.earthPan[5]!=null)eStems.push(GANS[calcData.earthPan[5]]);
     const dn=DOORS[calcData.doorPan[p]]; const isDP=checkPo(dn,p);
+    const changSheng = getChangShengForPalace(changShengStem,p);
     return(
       <div className="border border-black bg-white flex flex-col p-1.5" style={{minHeight:'120px'}}>
         <div className="flex justify-between items-start mb-1">
           <span className="text-xs text-gray-500 font-bold">{PALACES[p]}</span>
-          <div className="flex gap-1">{calcData.emptyPalaces.includes(p)&&<span className="text-xs text-red-500 font-bold">空</span>}{calcData.horsePalace===p&&<span className="text-xs text-green-600 font-bold">馬</span>}</div>
+          <div className="flex items-center gap-1">
+            {changSheng.map(({branch,stage})=><span key={branch} title={`${branch}：${stage}`} className="border border-blue-600 text-blue-700 text-[10px] leading-4 min-w-4 px-0.5 text-center font-bold">{stage}</span>)}
+            {calcData.emptyPalaces.includes(p)&&<span className="text-xs text-red-500 font-bold">空</span>}{calcData.horsePalace===p&&<span className="text-xs text-green-600 font-bold">馬</span>}
+          </div>
         </div>
         <div className="flex-1 flex flex-col justify-around">
           <span className="text-sm text-purple-700 font-semibold">{calcData.deityPan[p]}</span>
@@ -341,7 +371,7 @@ export default function QiMenDunJiaApp(){
       <div className="max-w-2xl mx-auto p-4 bg-white shadow-sm min-h-screen">
         <div className="mb-5 border-b border-gray-200 pb-4">
           <h1 className="text-xl font-bold flex items-center gap-2">奇門遁甲
-            <span className="text-xs font-normal bg-violet-100 text-violet-700 px-2 py-0.5 rounded-full">V10 至日時辰切換+日家循環法</span>
+            <span className="text-xs font-normal bg-violet-100 text-violet-700 px-2 py-0.5 rounded-full">V11 逐宮校正＋十二長生</span>
           </h1>
         </div>
         <div className="mb-4"><h2 className="text-sm font-bold text-gray-600 mb-2">設定時間</h2>
@@ -354,7 +384,7 @@ export default function QiMenDunJiaApp(){
             <button onClick={handleNow} className="border border-cyan-500 text-cyan-600 rounded px-3 py-2 text-sm hover:bg-cyan-50">現在時間</button>
           </div>
         </div>
-        <div className="grid grid-cols-2 gap-3 mb-5">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-5">
           <div><h2 className="text-sm font-bold text-gray-600 mb-1">排盤系統</h2>
             <select className={sel+" w-full"} value={system} onChange={e=>setSystem(e.target.value)}>
               <option value="1">陰盤</option><option value="2">時家(置閏)</option><option value="6">日家</option><option value="4">月家</option><option value="5">年家</option>
@@ -362,6 +392,10 @@ export default function QiMenDunJiaApp(){
           <div><h2 className="text-sm font-bold text-gray-600 mb-1">局數設定</h2>
             <select className={sel+" w-full"} value={juSetting} onChange={e=>setJuSetting(e.target.value)}>
               {juOpts.map(o=><option key={o.v} value={o.v}>{o.l}</option>)}
+            </select></div>
+          <div><h2 className="text-sm font-bold text-gray-600 mb-1">十二長生</h2>
+            <select className={sel+" w-full"} value={changShengStem} onChange={e=>setChangShengStem(e.target.value)}>
+              <option value="">不選擇</option>{GANS.map(g=><option key={g} value={g}>{g}</option>)}
             </select></div>
         </div>
         {!showResult&&<div className="text-center py-2"><button onClick={handleCalc} className="bg-orange-600 hover:bg-orange-700 text-white px-10 py-2.5 rounded font-medium shadow">開始排盤</button></div>}
