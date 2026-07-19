@@ -179,8 +179,8 @@ const computeQiMen = (yStr, mStr, dStr, hStr, juSetting, system) => {
   const monthOffset=(baziMonthZhi-2+12)%12;
   const monthStemStart=((yGanIndex%5)*2+2)%10;
   const mGanIndex=(monthStemStart+monthOffset)%10;
-  const dispYGan=(aY-4+1000)%10, dispYZhi=(aY-4+1200)%12;
-  const bazi = { y: GANS[dispYGan]+ZHIS[dispYZhi], m: GANS[mGanIndex]+ZHIS[baziMonthZhi], d: GANS[dGanIndex]+ZHIS[dZhiIndex], h: GANS[hGanIndex]+ZHIS[hZhiIndex] };
+  // 八字年柱以立春換年；立春前仍顯示上一個干支年。
+  const bazi = { y: GANS[yGanIndex]+ZHIS[yZhiIndex], m: GANS[mGanIndex]+ZHIS[baziMonthZhi], d: GANS[dGanIndex]+ZHIS[dZhiIndex], h: GANS[hGanIndex]+ZHIS[hZhiIndex] };
   const isWuBuYuShi = (hGanIndex-dGanIndex+10)%10===6;
 
   let tGanIndex,tZhiIndex;
