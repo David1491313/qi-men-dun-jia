@@ -8,7 +8,7 @@ const DOORS = [null,'休門','死門','傷門','杜門','中門','開門','驚�
 const DEITIES = ['值符','騰蛇','太陰','六合','白虎','玄武','九地','九天'];
 const RING = [1,8,3,4,9,2,7,6];
 const QI_GANS = [4,5,6,7,8,9,3,2,1];
-const CHANG_SHENG_STAGES = ['生','沐','冠','臨','旺','衰','病','死','墓','絕','胎','養'];
+const CHANG_SHENG_STAGES = ['生','沐','冠','臨','旺','衰','病','死','墓','絕','胎','養'];const CHANG_SHENG_BLUE_STAGES = new Set(['生','沐','冠','臨','旺','胎']);
 const PALACE_BRANCHES = {
   1:['子'], 8:['丑','寅'], 3:['卯'], 4:['辰','巳'],
   9:['午'], 2:['未','申'], 7:['酉'], 6:['戌','亥']
@@ -303,8 +303,8 @@ export default function QiMenDunJiaApp(){
   const [year,setYear]=useState('2026');const [month,setMonth]=useState('03');const [day,setDay]=useState('07');
   const [hour,setHour]=useState('13');const [minute,setMinute]=useState('22');
   const [system,setSystem]=useState('2');const [juSetting,setJuSetting]=useState('auto');
-  // 與校正來源一致，初次開盤預設顯示甲干十二長生。
-  const [changShengStem,setChangShengStem]=useState('甲');
+  // 星彧預設不顯示十二長生，選定天干後才逐宮標示。
+  const [changShengStem,setChangShengStem]=useState('');
   const [showResult,setShowResult]=useState(false);const [calcData,setCalcData]=useState(null);const [showDebug,setShowDebug]=useState(false);
 
   const years=Array.from({length:200},(_,i)=>(1901+i).toString());
@@ -328,27 +328,27 @@ export default function QiMenDunJiaApp(){
     let hStems=[]; if(hp?.stem!=null)hStems.push(GANS[hp.stem]); if(hp?.extraStem!=null)hStems.push(GANS[hp.extraStem]);
     let eStems=[GANS[calcData.earthPan[p]]]; if(p===2&&calcData.earthPan[5]!=null)eStems.push(GANS[calcData.earthPan[5]]);
     const dn=DOORS[calcData.doorPan[p]]; const isDP=checkPo(dn,p);
-    const changSheng = getChangShengForPalace(changShengStem,p);
+    const changSheng = getChangShengForPalace(changShengStem,p); const starChangSheng = changSheng[0] ?? null; const doorChangSheng = changSheng[1] ?? null; const renderChangShengBadge = item => item && (<span title={`${item.branch}：${item.stage}`} className={`border text-[10px] leading-4 min-w-4 px-0.5 text-center font-bold shrink-0 ${CHANG_SHENG_BLUE_STAGES.has(item.stage)?'border-blue-600 text-blue-700':'border-gray-800 text-gray-900'}`}>{item.stage}</span>);
     return(
       <div className="border border-black bg-white flex flex-col p-1.5" style={{minHeight:'120px'}}>
         <div className="flex justify-between items-start mb-1">
           <span className="text-xs text-gray-500 font-bold">{PALACES[p]}</span>
           <div className="flex items-center gap-1">
-            {changSheng.map(({branch,stage})=><span key={branch} title={`${branch}：${stage}`} className="border border-blue-600 text-blue-700 text-[10px] leading-4 min-w-4 px-0.5 text-center font-bold">{stage}</span>)}
+            
             {calcData.emptyPalaces.includes(p)&&<span className="text-xs text-red-500 font-bold">空</span>}{calcData.horsePalace===p&&<span className="text-xs text-green-600 font-bold">馬</span>}
           </div>
         </div>
         <div className="flex-1 flex flex-col justify-around">
           <span className="text-sm text-purple-700 font-semibold">{calcData.deityPan[p]}</span>
           <div className="flex justify-between items-center">
-            <span className="text-sm text-blue-800 font-semibold">{STARS[hp?.star]}</span>
+            <div className="flex items-center gap-1 min-w-0">{renderChangShengBadge(starChangSheng)}<span className="text-sm text-blue-800 font-semibold">{STARS[hp?.star]}</span></div>
             <div className="flex flex-col items-end">
               <div className="flex items-center gap-0.5">{hStems.map((s,i)=><span key={i} className={`text-base font-black ${checkXing(s,p)?'text-red-600':'text-gray-900'}`}>{s}</span>)}</div>
               <div className="flex">{hStems.map((s,i)=>checkXing(s,p)?<span key={i} className="text-[8px] text-red-500">刑</span>:checkMu(s,p)?<span key={i} className="text-[8px] text-gray-400">墓</span>:null)}</div>
             </div>
           </div>
           <div className="flex justify-between items-center">
-            <div className="flex flex-col"><span className={`text-sm font-semibold ${isDP?'text-red-600':'text-green-800'}`}>{dn}</span>{isDP&&<span className="text-[8px] text-red-400 font-bold">迫</span>}</div>
+            <div className="flex items-center gap-1 min-w-0">{renderChangShengBadge(doorChangSheng)}<div className="flex flex-col"><span className={`text-sm font-semibold ${isDP?'text-red-600':'text-green-800'}`}>{dn}</span>{isDP&&<span className="text-[8px] text-red-400 font-bold">迫</span>}</div></div>
             <div className="flex flex-col items-end">
               <div className="flex items-center gap-0.5">{eStems.map((s,i)=><span key={i} className={`text-base font-black ${checkXing(s,p)?'text-red-600':'text-gray-900'}`}>{s}</span>)}</div>
               <div className="flex">{eStems.map((s,i)=>checkXing(s,p)?<span key={i} className="text-[8px] text-red-500">刑</span>:checkMu(s,p)?<span key={i} className="text-[8px] text-gray-400">墓</span>:null)}</div>
@@ -371,7 +371,7 @@ export default function QiMenDunJiaApp(){
       <div className="max-w-2xl mx-auto p-4 bg-white shadow-sm min-h-screen">
         <div className="mb-5 border-b border-gray-200 pb-4">
           <h1 className="text-xl font-bold flex items-center gap-2">奇門遁甲
-            <span className="text-xs font-normal bg-violet-100 text-violet-700 px-2 py-0.5 rounded-full">V11 逐宮校正＋十二長生</span>
+            <span className="text-xs font-normal bg-violet-100 text-violet-700 px-2 py-0.5 rounded-full">V12 星彧十二長生定位</span>
           </h1>
         </div>
         <div className="mb-4"><h2 className="text-sm font-bold text-gray-600 mb-2">設定時間</h2>
