@@ -31,7 +31,8 @@ Tailwind 以 PostCSS 編譯為本地 CSS，無須瀏覽器載入外部樣式 CDN
 
 ## 模組邊界
 
-- `src/App.jsx`：原始奇門排盤，保留原檔與計算規則。
+- `src/App.jsx`：奇門排盤介面。
+- `src/features/qimen/engine.js`：奇門純計算核心，供介面與回歸測試共用。
 - `src/ToolApp.jsx`：hash 導覽與頁面狀態，不依賴伺服器路由 rewrite。
 - `src/features/feng-shui/directions.js`：純資料與角度／版面函式，不引用奇門常數。
 - `FengShuiPage.jsx`、`Compass.jsx`、`NinePalaceGrid.jsx`：獨立互動與呈現。
@@ -41,10 +42,16 @@ Tailwind 以 PostCSS 編譯為本地 CSS，無須瀏覽器載入外部樣式 CDN
 
 推送 main 後，`.github/workflows/deploy.yml` 安裝鎖定依賴、執行單元測試及建置，成功後由原有 GitHub Pages 工作流程部署。瀏覽器驗收項目：0°／22.5°／337.5°／360°／-45°、清空、快捷方向、滑桿、宮位點選、上北／上南、跨頁狀態、原排盤與前後時辰按鈕。
 
-## 本次驗證（2026-10-23）
+## 風水工具版本驗證（2026-10-23）
 
 - `npm ci`、12 項 Node 單元測試、Vite production build 通過。
 - 瀏覽器實測：角度交界、360°、負角度、清空、快捷方向、滑桿鍵盤調整、九宮點選、中宮說明、上北／上南、跨頁狀態保留通過。
 - 原奇門排盤可產生九宮結果，前後時辰可由13時切至15時再切回。
 - 390px iframe 手機寬度測試（可用內容寬度375px）無橫向溢出，輸入與宮位點選正常。這是響應式版面檢查，尚未以實體 iPhone 驗證。
-- 原始 `src/App.jsx` Git blob SHA 維持 `de16e2e72aca1c3baab8ea84958cbf509475d7de`。
+- 此風水版本當時的 `src/App.jsx` Git blob SHA 為 `de16e2e72aca1c3baab8ea84958cbf509475d7de`。
+
+## 奇門對照校正（2026-10-23）
+
+- 修正旬首落中五時的值使起算、置閏延長週期的元序，以及台灣輸入日期受宿主時區影響的問題。
+- 十干十二長生對照相符，保留既有長生表；新增 17 項奇門回歸測試，連同原有測試共 29 項通過，production build 通過。
+- 實際對照案例、修改原因與驗證範圍見 [排盤對照紀錄](docs/qimen-reference-check-2026-10-23.md)。
