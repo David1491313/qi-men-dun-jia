@@ -137,18 +137,23 @@ function determineYinYangDun(year, month, day) {
   return { isYangDun, juShu: JU_TABLE[currentJQ]?.[yuanIdx] || 1, jieQi: currentJQ, yuan: ['上元','中元','下元'][yuanIdx], jqDay };
 }
 
-const isYinPanYangJu = (y, m, d, h) => {
-  const xzDay = calcJieQiDay(y, '夏至');
+// 陰盤夏至以實際輸入時刻比較；不使用子初換日後的日期。
+const yinPanSummerCache = new Map();
+function isBeforeYinPanSummer(y, m, d, h, minute) {
+  if (!yinPanSummerCache.has(y)) {
+    const table = Solar.fromYmd(y, 7, 1).getLunar().getJieQiTable();
+    yinPanSummerCache.set(y, table['夏至'].toYmdHms());
+  }
+  return Solar.fromYmdHms(y,m,d,h,minute,0).toYmdHms() < yinPanSummerCache.get(y);
+}
+
+// 冬至仍保留既有規則：網站跨年對照有待確認，不在本次猜測替換。
+const isYinPanWinterYangJu = (y, m, d, h) => {
+  // 12/31 的 23 時子初換日後可已是次年一月，仍屬冬至後陽遁。
+  if(m <= 5) return true;
   const dzDay = calcJieQiDay(y, '冬至');
-  // 夏至日：酉時(18)前陽遁，酉時起陰遁
-  if(m===6 && d===xzDay) return h < 18;
-  // 冬至日：午時(12)前陰遁，午時起陽遁
   if(m===12 && d===dzDay) return h >= 12;
-  // 冬至後～夏至前 = 陽遁
-  if(m===12 && d>dzDay) return true;
-  if(m>=1 && m<=5) return true;
-  if(m===6 && d<xzDay) return true;
-  return false;
+  return m===12 && d>dzDay;
 };
 
 // ===== 主計算 =====
@@ -185,9 +190,9 @@ const computeQiMen = (yStr, mStr, dStr, hStr, juSetting, system, minuteStr = '0'
   const monthOffset=(baziMonthZhi-2+12)%12;
   const monthStemStart=((yGanIndex%5)*2+2)%10;
   const mGanIndex=(monthStemStart+monthOffset)%10;
-  // 時家四柱的年、月按輸入時刻交節；不能沿用只精確到日的置閏起局日期。
+  // 陰盤及時家四柱的年、月按輸入時刻交節；不能沿用按日近似值。
   // 用實際輸入日期判斷交節，日柱仍獨立採 23 時子初換日。
-  const timeCalendar = system === '2'
+  const timeCalendar = (system === '1' || system === '2')
     ? Solar.fromYmdHms(y, m, d, h, Number(minuteStr), 0).getLunar()
     : null;
   const bazi = {
@@ -207,14 +212,13 @@ const computeQiMen = (yStr, mStr, dStr, hStr, juSetting, system, minuteStr = '0'
   if(juSetting!=='auto'){
     isYin=juSetting.startsWith('yin'); juNum=parseInt(juSetting.replace('yin','').replace('yang',''));
   } else if(system==='1'){
-    // 陰盤：立春日需以時辰分界年支（立春約在寅時末~卯時初）
-    let yinPanYear = baziYear;
-    const lichunDay = calcJieQiDay(aY, '立春');
-    if (aM === 2 && aD === lichunDay && h < 6) {
-      yinPanYear = aY - 1; // 立春當天卯時前仍屬前一年
-    }
-    const yZhiForYinPan = (yinPanYear - 4 + 1200) % 12;
-    isYin=!isYinPanYangJu(aY,aM,aD,h); juNum=((yZhiForYinPan+1)+lunarM+lunarD+(hZhiIndex+1))%9||9;
+    // 年支依實際立春時刻換年，不再寫死當天 06:00。
+    const yZhiForYinPan = ZHIS.indexOf(timeCalendar.getYearZhiExact());
+    const isYang = m <= 6
+      ? isBeforeYinPanSummer(y,m,d,h,Number(minuteStr))
+      : isYinPanWinterYangJu(aY,aM,aD,h);
+    isYin = !isYang;
+    juNum=((yZhiForYinPan+1)+lunarM+lunarD+(hZhiIndex+1))%9||9;
   } else if(system==='5'){
     // 年家：180年三元，局數整元固定，全用陰遁
     isYin=true;
