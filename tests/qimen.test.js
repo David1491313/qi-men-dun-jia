@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
+import { createHash } from 'node:crypto';
 import { computeQiMen, getChangShengForPalace, GANS, STARS, DOORS, RING } from '../src/features/qimen/engine.js';
 
 // Expected values transcribed from the user's star-artint.com reference image,
@@ -25,6 +26,64 @@ test('陰盤陽五局也保留中五原宮起算，天禽仍隨天芮寄坤', ()
   assert.deepEqual(stars(r), ['天沖','天輔','天英','天芮','天柱','天心','天蓬','天任']);
   assert.deepEqual(RING.map(p => r.outerStems[p]), ['壬','丁戊','庚','己','癸','辛','丙','乙']);
   assert.equal(GANS[r.heavenPan[4].extraStem], '戊');
+});
+
+test('陰盤夏至交界：同一申時16:00陽一、16:30陰一', () => {
+  const before = computeQiMen('2026','06','21','16','auto','1','00');
+  const after = computeQiMen('2026','06','21','16','auto','1','30');
+  assert.equal(before.juText,'陽1');
+  assert.equal(after.juText,'陰1');
+  assert.deepEqual(doors(after), ['生門','傷門','杜門','景門','死門','驚門','開門','休門']);
+  assert.deepEqual(stars(after), ['天英','天芮','天柱','天心','天蓬','天任','天沖','天輔']);
+  assert.equal(computeQiMen('2026','06','21','17','auto','1','30').juText,'陰2');
+});
+
+test('陰盤夏至前一日23時換日不代表提前交夏至', () => {
+  const r = computeQiMen('2026','06','20','23','auto','1','30');
+  assert.equal(r.juText,'陽2');
+  assert.equal(r.bazi.d,'丙寅');
+  assert.equal(r.bazi.h,'戊子');
+  assert.equal(r.lunar,'丙午 年 05 月 07 日');
+});
+
+test('陰盤不同年份夏至不用固定18時：2028/6/21 04:10已陰一', () => {
+  assert.equal(computeQiMen('2028','06','21','04','auto','1','10').juText,'陰1');
+});
+
+test('陰盤立春年支參與起局：2026/2/4 05:30陽四，非陽三', () => {
+  const r = computeQiMen('2026','02','04','05','auto','1','30');
+  assert.equal(r.juText,'陽4');
+  assert.deepEqual([r.bazi.y,r.bazi.m],['丙午','庚寅']);
+});
+
+test('陰盤2028立春同一申時跨交節，局數由陽一變陽二', () => {
+  const before = computeQiMen('2028','02','04','15','auto','1','00');
+  const after = computeQiMen('2028','02','04','15','auto','1','40');
+  assert.deepEqual([before.juText,before.bazi.y,before.bazi.m],['陽1','丁未','癸丑']);
+  assert.deepEqual([after.juText,after.bazi.y,after.bazi.m],['陽2','戊申','甲寅']);
+});
+
+// V13 (90bdbc0) 的完整結果快照；只保護本輪未修改的四種系統。
+// 這些是相容性基準，不代表日/月/年家已被外部網站驗證；修正它們時應
+// 先加入網站盤例，再有意識地更新基準，不能為過測試而保留已知錯誤。
+const previousSystemDigests = {
+  '2':'f55cb4d79fee505e04705c92c5f6f921a00bbfa071c080275e2d9dc8a64e7f8f',
+  '4':'901b64b41e57145a94e235516db3b2ee6031dc8d0c9b2545cde01a0554b0e955',
+  '5':'4e73c572809f52c104dd2a7e35ad2abe7872f52a0fa37a8312e19585b300bd10',
+  '6':'928af78cdc876ad7c413a2d03021b069bcde56c33917c2d07a952e4c57ad02a9',
+};
+test('陰盤一般日期與12/31子初換日：244組完整結果保持V13相容', () => {
+  const values=[];
+  for(let y=2025;y<=2028;y++)for(let m=1;m<=12;m++)for(let h of [0,5,11,16,23]) values.push(computeQiMen(String(y),String(m),'15',String(h),'auto','1','30'));
+  for(let y=2025;y<=2028;y++) values.push(computeQiMen(String(y),'12','31','23','auto','1','30'));
+  assert.equal(createHash('sha256').update(JSON.stringify(values)).digest('hex'),'0c65de435c116abdeb64adc733db07fe79ac8e835e80c244390580446aa666fc');
+});
+for (const [system,expected] of Object.entries(previousSystemDigests)) test(`陰盤修正不改系統${system}：960組完整結果與V13一致`, () => {
+  const values=[];
+  for(let y=2025;y<=2028;y++)for(let m=1;m<=12;m++)for(let d of [1,4,21,28])for(let h of [0,5,11,16,23]) {
+    values.push(computeQiMen(String(y),String(m),String(d),String(h),'auto',system,'30'));
+  }
+  assert.equal(createHash('sha256').update(JSON.stringify(values)).digest('hex'),expected);
 });
 
 test('陰遁六局：中五起算逆行三宮，值使仍落坤二', () => {
