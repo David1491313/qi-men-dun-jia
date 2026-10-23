@@ -19,9 +19,9 @@ export default function QiMenDunJiaApp(){
   const juOpts=[{v:'auto',l:'自動計算'},...Array.from({length:9},(_,i)=>({v:`yang${i+1}`,l:`陽遁${i+1}局`})),...Array.from({length:9},(_,i)=>({v:`yin${i+1}`,l:`陰遁${i+1}局`}))];
   const sysMap={'1':'陰盤','2':'時家(置閏)','6':'日家','4':'月家','5':'年家'};
 
-  useEffect(()=>{ if(showResult) setCalcData(computeQiMen(year,month,day,hour,juSetting,system)); },[year,month,day,hour,juSetting,system,showResult]);
+  useEffect(()=>{ if(showResult) setCalcData(computeQiMen(year,month,day,hour,juSetting,system,minute)); },[year,month,day,hour,minute,juSetting,system,showResult]);
   const handleNow=()=>{const n=new Date();setYear(n.getFullYear().toString());setMonth((n.getMonth()+1).toString().padStart(2,'0'));setDay(n.getDate().toString().padStart(2,'0'));setHour(n.getHours().toString().padStart(2,'0'));setMinute(n.getMinutes().toString().padStart(2,'0'));};
-  const handleCalc=()=>{setCalcData(computeQiMen(year,month,day,hour,juSetting,system));setShowResult(true);};
+  const handleCalc=()=>{setCalcData(computeQiMen(year,month,day,hour,juSetting,system,minute));setShowResult(true);};
   const qc=(t,a)=>{ let dt=new Date(parseInt(year),parseInt(month)-1,parseInt(day),parseInt(hour)); if(t==='day')dt.setDate(dt.getDate()+a); if(t==='hour')dt.setHours(dt.getHours()+a); if(t==='month')dt.setMonth(dt.getMonth()+a); if(t==='year')dt.setFullYear(dt.getFullYear()+a); setYear(dt.getFullYear().toString());setMonth((dt.getMonth()+1).toString().padStart(2,'0'));setDay(dt.getDate().toString().padStart(2,'0'));setHour(dt.getHours().toString().padStart(2,'0')); };
   const sel="border border-gray-300 rounded px-3 py-2 focus:ring-2 focus:ring-blue-200 focus:outline-none text-sm bg-white";
 
@@ -74,7 +74,7 @@ export default function QiMenDunJiaApp(){
       <div className="max-w-2xl mx-auto p-4 bg-white shadow-sm min-h-screen">
         <div className="mb-5 border-b border-gray-200 pb-4">
           <h1 className="text-xl font-bold flex items-center gap-2">奇門遁甲
-            <span className="text-xs font-normal bg-violet-100 text-violet-700 px-2 py-0.5 rounded-full">V12 星彧十二長生定位</span>
+            <span className="text-xs font-normal bg-violet-100 text-violet-700 px-2 py-0.5 rounded-full">V13 時家交節校正</span>
           </h1>
         </div>
         <div className="mb-4"><h2 className="text-sm font-bold text-gray-600 mb-2">設定時間</h2>

@@ -1,3 +1,7 @@
+import lunarCalendar from 'lunar-javascript';
+
+const { Solar } = lunarCalendar;
+
 const GANS = ['甲','乙','丙','丁','戊','己','庚','辛','壬','癸'];
 const ZHIS = ['子','丑','寅','卯','辰','巳','午','未','申','酉','戌','亥'];
 const PALACES = [null,'坎₁','坤₂','震₃','巽₄','中₅','乾₆','兌₇','艮₈','離₉'];
@@ -84,7 +88,9 @@ function toAbsDay(y,m,d){ const dt=new Date(Date.UTC(y,m-1,d,12)); return Math.r
 function getFutouAbs(solsticeAbs) {
   const idx60 = ((solsticeAbs % 60) + 60) % 60;
   const offset = idx60 % 15;
-  return offset <= 7 ? solsticeAbs - offset : solsticeAbs + (15 - offset);
+  // 對照時家置閏：符頭超前 0–8 日沿用，達 9 日才轉下一符頭。
+  // 不是以 7/8 日為界選最近的符頭，否則會提早或延後整個十五日循環。
+  return offset <= 8 ? solsticeAbs - offset : solsticeAbs + (15 - offset);
 }
 
 function determineZhiRunJu(year, month, day) {
@@ -146,7 +152,7 @@ const isYinPanYangJu = (y, m, d, h) => {
 };
 
 // ===== 主計算 =====
-const computeQiMen = (yStr, mStr, dStr, hStr, juSetting, system) => {
+const computeQiMen = (yStr, mStr, dStr, hStr, juSetting, system, minuteStr = '0') => {
   const y=parseInt(yStr),m=parseInt(mStr),d=parseInt(dStr),h=parseInt(hStr);
   const isNextDay = h >= 23;
   // 子初換日：先在輸入的台灣日曆日期上進一天，不經宿主時區轉換。
@@ -179,8 +185,16 @@ const computeQiMen = (yStr, mStr, dStr, hStr, juSetting, system) => {
   const monthOffset=(baziMonthZhi-2+12)%12;
   const monthStemStart=((yGanIndex%5)*2+2)%10;
   const mGanIndex=(monthStemStart+monthOffset)%10;
-  // 八字年柱以立春換年；立春前仍顯示上一個干支年。
-  const bazi = { y: GANS[yGanIndex]+ZHIS[yZhiIndex], m: GANS[mGanIndex]+ZHIS[baziMonthZhi], d: GANS[dGanIndex]+ZHIS[dZhiIndex], h: GANS[hGanIndex]+ZHIS[hZhiIndex] };
+  // 時家四柱的年、月按輸入時刻交節；不能沿用只精確到日的置閏起局日期。
+  // 用實際輸入日期判斷交節，日柱仍獨立採 23 時子初換日。
+  const timeCalendar = system === '2'
+    ? Solar.fromYmdHms(y, m, d, h, Number(minuteStr), 0).getLunar()
+    : null;
+  const bazi = {
+    y: timeCalendar ? timeCalendar.getYearInGanZhiExact() : GANS[yGanIndex]+ZHIS[yZhiIndex],
+    m: timeCalendar ? timeCalendar.getMonthInGanZhiExact() : GANS[mGanIndex]+ZHIS[baziMonthZhi],
+    d: GANS[dGanIndex]+ZHIS[dZhiIndex], h: GANS[hGanIndex]+ZHIS[hZhiIndex]
+  };
   const isWuBuYuShi = (hGanIndex-dGanIndex+10)%10===6;
 
   let tGanIndex,tZhiIndex;

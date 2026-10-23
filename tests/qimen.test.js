@@ -62,6 +62,59 @@ test('23時子初換日與參考盤一致，農曆進一日', () => {
   assert.deepEqual(doors(r), ['傷門','杜門','景門','死門','驚門','開門','休門','生門']);
 });
 
+test('時家立春依交節時刻換年、換月，不在閏年提前一天', () => {
+  const a = computeQiMen('2028','02','03','13','auto','2','30');
+  const b = computeQiMen('2028','02','04','13','auto','2','30');
+  assert.deepEqual([a.bazi.y,a.bazi.m,a.juText], ['丁未','癸丑','陽9']);
+  assert.deepEqual([b.bazi.y,b.bazi.m,b.juText], ['丁未','癸丑','陽6']);
+});
+
+test('分鐘真正參與時家交節判斷，同一申時15:00與15:40年、月柱不同', () => {
+  const before = computeQiMen('2028','02','04','15','auto','2','00');
+  const after = computeQiMen('2028','02','04','15','auto','2','40');
+  assert.deepEqual([before.bazi.y,before.bazi.m], ['丁未','癸丑']);
+  assert.deepEqual([after.bazi.y,after.bazi.m], ['戊申','甲寅']);
+  assert.equal(before.bazi.d, after.bazi.d);
+  assert.equal(before.bazi.h, after.bazi.h);
+  // 天文年/月柱交節不改機械式置閏局數或九宮旋轉。
+  for (const key of ['juText','earthPan','heavenPan','doorPan','outerStems']) assert.deepEqual(before[key],after[key]);
+});
+
+test('2026驚蟄當晚已換辛卯月，不延到3月6日', () => {
+  const before = computeQiMen('2026','03','05','13','auto','2','30');
+  const after = computeQiMen('2026','03','05','22','auto','2','30');
+  assert.equal(before.bazi.m, '庚寅');
+  assert.equal(after.bazi.m, '辛卯');
+  assert.equal(before.juText, '陽3');
+  assert.equal(after.juText, '陽3');
+});
+
+test('符頭超前八日仍採前符頭：2030夏至、2035冬至', () => {
+  const r = chart('2030','06','18','13');
+  assert.equal(r.juText,'陰3');
+  assert.equal(chart('2030','06','28','13').juText,'陰8');
+  assert.equal(chart('2035','12','20','13').juText,'陽7');
+  assert.deepEqual(doors(r), ['死門','驚門','開門','休門','生門','傷門','杜門','景門']);
+  assert.deepEqual(stars(r), ['天柱','天心','天蓬','天任','天沖','天輔','天英','天芮']);
+  assert.deepEqual(RING.map(p=>r.outerStems[p]), ['丁','庚','壬','戊','乙','辛','己丙','癸']);
+});
+
+test('符頭超前九至十日才順延：門檻不能無限制向前', () => {
+  assert.equal(chart('2033','06','18','13').juText,'陽3');
+  assert.equal(chart('2036','06','18','13').juText,'陽3');
+  assert.equal(chart('2038','12','20','13').juText,'陰7');
+});
+
+test('跨年份、冬夏至子初換日的新增網站對照盤例', () => {
+  for (const [y,m,d,h,expected] of [
+    ['1967','06','20','13','陰3'], ['1992','12','20','13','陽7'],
+    ['2000','01','01','00','陽7'], ['2026','06','18','23','陰9'],
+    ['2026','12','15','23','陽1'], ['2027','06','13','23','陰9'],
+    ['2028','06','22','23','陰9'],
+    ['2030','06','12','22','陽9'], ['2030','06','12','23','陰9'],
+  ]) assert.equal(chart(y,m,d,h).juText,expected,`${y}-${m}-${d} ${h}`);
+});
+
 test('台灣輸入日期不受宿主時區或夏令時間影響', () => {
   const inputs = [
     ['2026','10','23','01','2'], ['2026','10','23','23','2'],
@@ -69,9 +122,10 @@ test('台灣輸入日期不受宿主時區或夏令時間影響', () => {
     ['2026','11','01','01','2'], ['2027','12','15','13','2'],
     ['2026','02','03','23','4'], ['2026','06','20','23','6'],
     ['2026','01','01','00','5'],
+    ['2028','02','04','15','2','00'], ['2028','02','04','15','2','40'],
   ];
   const engine = new URL('../src/features/qimen/engine.js', import.meta.url).href;
-  const source = `import {computeQiMen as c} from ${JSON.stringify(engine)}; console.log(JSON.stringify(${JSON.stringify(inputs)}.map(([y,m,d,h,s])=>c(y,m,d,h,'auto',s))));`;
+  const source = `import {computeQiMen as c} from ${JSON.stringify(engine)}; console.log(JSON.stringify(${JSON.stringify(inputs)}.map(([y,m,d,h,s,mi])=>c(y,m,d,h,'auto',s,mi))));`;
   const run = tz => JSON.parse(execFileSync(process.execPath, ['--input-type=module','-e',source], {env:{...process.env,TZ:tz},encoding:'utf8'}));
   const expected = run('Asia/Taipei');
   assert.deepEqual(expected[0].bazi, {y:'丙午',m:'戊戌',d:'庚午',h:'丁丑'});
