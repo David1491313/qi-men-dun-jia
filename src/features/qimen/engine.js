@@ -181,23 +181,21 @@ const computeQiMen = (yStr, mStr, dStr, hStr, juSetting, system, minuteStr = '0'
   const hGanIndex = (dGanIndex*2+hZhiIndex)%10;
 
   const aY=astroDate.getUTCFullYear(), aM=astroDate.getUTCMonth()+1, aD=astroDate.getUTCDate();
-  let baziYear=aY, baziMonthZhi=aM;
-  const jqTM = getJieQiForMonth(aY, aM);
-  if(aD < jqTM[0].day) baziMonthZhi -= 1;
-  if(baziMonthZhi < 2) baziYear -= 1;
-  baziMonthZhi = (baziMonthZhi + 12) % 12;
-  const yGanIndex=(baziYear-4+1000)%10, yZhiIndex=(baziYear-4+1200)%12;
-  const monthOffset=(baziMonthZhi-2+12)%12;
-  const monthStemStart=((yGanIndex%5)*2+2)%10;
-  const mGanIndex=(monthStemStart+monthOffset)%10;
-  // 陰盤及時家四柱的年、月按輸入時刻交節；不能沿用按日近似值。
-  // 用實際輸入日期判斷交節，日柱仍獨立採 23 時子初換日。
-  const timeCalendar = (system === '1' || system === '2')
-    ? Solar.fromYmdHms(y, m, d, h, Number(minuteStr), 0).getLunar()
-    : null;
+  // 五種系統的顯示四柱均按實際輸入時分交節，日柱仍獨立採子初換日。
+  const timeCalendar = Solar.fromYmdHms(y,m,d,h,Number(minuteStr),0).getLunar();
+  // 本輪實盤月家採交節整日的月柱起盤，與顯示四柱不同；23時推進日期。
+  // 年家則以實際立春時刻的年柱起盤，不能把月家的整日規則共用過去。
+  const monthCalendar = system === '4' ? Solar.fromYmd(aY,aM,aD).getLunar() : null;
+  const periodYear = monthCalendar ? monthCalendar.getYearInGanZhiByLiChun() : timeCalendar.getYearInGanZhiExact();
+  const yGanIndex=GANS.indexOf(periodYear[0]), yZhiIndex=ZHIS.indexOf(periodYear[1]);
+  const civilYear=monthCalendar ? aY : y;
+  const civilYearPillar=GANS[(civilYear-4)%10]+ZHIS[(civilYear-4)%12];
+  const baziYear=civilYear-(periodYear===civilYearPillar ? 0 : 1);
+  const baziMonthZhi=monthCalendar ? monthCalendar.getMonthZhiIndex() : timeCalendar.getMonthZhiIndexExact();
+  const mGanIndex=monthCalendar ? monthCalendar.getMonthGanIndex() : timeCalendar.getMonthGanIndexExact();
   const bazi = {
-    y: timeCalendar ? timeCalendar.getYearInGanZhiExact() : GANS[yGanIndex]+ZHIS[yZhiIndex],
-    m: timeCalendar ? timeCalendar.getMonthInGanZhiExact() : GANS[mGanIndex]+ZHIS[baziMonthZhi],
+    y: timeCalendar.getYearInGanZhiExact(),
+    m: timeCalendar.getMonthInGanZhiExact(),
     d: GANS[dGanIndex]+ZHIS[dZhiIndex], h: GANS[hGanIndex]+ZHIS[hZhiIndex]
   };
   const isWuBuYuShi = (hGanIndex-dGanIndex+10)%10===6;
@@ -220,9 +218,9 @@ const computeQiMen = (yStr, mStr, dStr, hStr, juSetting, system, minuteStr = '0'
     isYin = !isYang;
     juNum=((yZhiForYinPan+1)+lunarM+lunarD+(hZhiIndex+1))%9||9;
   } else if(system==='5'){
-    // 年家：180年三元，局數整元固定，全用陰遁
+    // 年家：180年三元，局數按子初換日後的西元年；起盤年柱另按立春時刻。
     isYin=true;
-    const yf=((baziYear-1864)%180+180)%180;
+    const yf=((aY-1864)%180+180)%180;
     juNum=[1,4,7][Math.floor(yf/60)];
   } else if(system==='4'){
     // 月家：統一公式，全用陰遁
@@ -299,10 +297,11 @@ const computeQiMen = (yStr, mStr, dStr, hStr, juSetting, system, minuteStr = '0'
   }
 
   let yuanInfo = null;
-  if(system==='5'&&juSetting==='auto'){ const yf=((baziYear-1864)%180+180)%180; const yi=Math.floor(yf/60); yuanInfo={yuan:['上元','中元','下元'][yi],startPalace:[1,4,7][yi],yearIn180:yf+1}; }
+  if(system==='5'&&juSetting==='auto'){ const yf=((aY-1864)%180+180)%180; const yi=Math.floor(yf/60); yuanInfo={yuan:['上元','中元','下元'][yi],startPalace:[1,4,7][yi],yearIn180:yf+1}; }
   else if(system==='4'&&juSetting==='auto'){ const myt=yZhiIndex%3; yuanInfo={yuan:['中元','下元','上元'][myt],yearBranchType:['四仲→中元','四季→下元','四孟→上元'][myt],yearBranch:ZHIS[yZhiIndex]}; }
 
   return {
+    ...(system==='4' ? {chartPillar:GANS[mGanIndex]+ZHIS[baziMonthZhi]} : {}),
     bazi, lunar:`${lunarYearStr||bazi.y} 年 ${String(lunarM).padStart(2,'0')} 月 ${String(lunarD).padStart(2,'0')} 日`,
     displayHStr:astroHStr, juText:(isYin?'陰':'陽')+juNum,
     xunText, fuText:GANS[xunStem], zhiFu:STARS[fuPalace], zhiShi:DOORS[fuPalace],

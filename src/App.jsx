@@ -77,7 +77,7 @@ export default function QiMenDunJiaApp(){
       <div className="max-w-2xl mx-auto p-4 bg-white shadow-sm min-h-screen">
         <div className="mb-5 border-b border-gray-200 pb-4">
           <h1 className="text-xl font-bold flex items-center gap-2">奇門遁甲
-            <span className="text-xs font-normal bg-violet-100 text-violet-700 px-2 py-0.5 rounded-full">V15 日期選擇校正</span>
+            <span className="text-xs font-normal bg-violet-100 text-violet-700 px-2 py-0.5 rounded-full">V16 月年交節校正</span>
           </h1>
         </div>
         <div className="mb-4"><h2 className="text-sm font-bold text-gray-600 mb-2">設定時間</h2>
@@ -130,7 +130,7 @@ export default function QiMenDunJiaApp(){
               </div>}
               {calcData.yuanInfo&&<div className="text-xs text-gray-500 mt-1">
                 {system==='5'&&<span>年家：{calcData.yuanInfo.yuan}（180年第{calcData.yuanInfo.yearIn180}年）固定局{calcData.yuanInfo.startPalace}</span>}
-                {system==='4'&&<span>月家：年支{calcData.yuanInfo.yearBranch}＝{calcData.yuanInfo.yearBranchType}</span>}
+                {system==='4'&&<span>月家：年支{calcData.yuanInfo.yearBranch}＝{calcData.yuanInfo.yearBranchType}；起盤月柱{calcData.chartPillar}（交節整日，23時換日）</span>}
               </div>}
               <div className="flex flex-wrap gap-2 mt-2">
                 {calcData.isWuBuYuShi&&<span className="bg-red-100 text-red-600 text-xs px-2 py-0.5 rounded font-bold">⚠️ 五不遇時</span>}
