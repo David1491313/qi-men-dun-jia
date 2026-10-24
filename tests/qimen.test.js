@@ -63,14 +63,13 @@ test('陰盤2028立春同一申時跨交節，局數由陽一變陽二', () => {
   assert.deepEqual([after.juText,after.bazi.y,after.bazi.m],['陽2','戊申','甲寅']);
 });
 
-// V13 (90bdbc0) 的完整結果快照；只保護本輪未修改的四種系統。
-// 這些是相容性基準，不代表日/月/年家已被外部網站驗證；修正它們時應
-// 先加入網站盤例，再有意識地更新基準，不能為過測試而保留已知錯誤。
+// 時家保留 V13 的完整結果快照；月/年/日家在 V16 取得實盤證據後更新。
+// 網站對照值另在 qimen-period-reference.test.js，不把快照當外部驗證。
 const previousSystemDigests = {
   '2':'f55cb4d79fee505e04705c92c5f6f921a00bbfa071c080275e2d9dc8a64e7f8f',
-  '4':'901b64b41e57145a94e235516db3b2ee6031dc8d0c9b2545cde01a0554b0e955',
-  '5':'4e73c572809f52c104dd2a7e35ad2abe7872f52a0fa37a8312e19585b300bd10',
-  '6':'928af78cdc876ad7c413a2d03021b069bcde56c33917c2d07a952e4c57ad02a9',
+  '4':'ea0be47f4de00ce966e9f9d2554bb3cc967e64c188f1356ff4b4c20234e184ca',
+  '5':'1f85eb2190b765bcadebd028e2cae093bf151283b1fb184c70a72f85807cf03a',
+  '6':'6fbb4bf06a67a2bd2743443ec1ff712b09a28f16dfec6bc50c9d553fe8ecdd0d',
 };
 test('陰盤一般日期與12/31子初換日：244組完整結果保持V13相容', () => {
   const values=[];
@@ -78,7 +77,7 @@ test('陰盤一般日期與12/31子初換日：244組完整結果保持V13相容
   for(let y=2025;y<=2028;y++) values.push(computeQiMen(String(y),'12','31','23','auto','1','30'));
   assert.equal(createHash('sha256').update(JSON.stringify(values)).digest('hex'),'0c65de435c116abdeb64adc733db07fe79ac8e835e80c244390580446aa666fc');
 });
-for (const [system,expected] of Object.entries(previousSystemDigests)) test(`陰盤修正不改系統${system}：960組完整結果與V13一致`, () => {
+for (const [system,expected] of Object.entries(previousSystemDigests)) test(`系統${system}：960組完整結果與${system==='2'?'V13':'V16'}基準一致`, () => {
   const values=[];
   for(let y=2025;y<=2028;y++)for(let m=1;m<=12;m++)for(let d of [1,4,21,28])for(let h of [0,5,11,16,23]) {
     values.push(computeQiMen(String(y),String(m),String(d),String(h),'auto',system,'30'));
@@ -182,6 +181,9 @@ test('台灣輸入日期不受宿主時區或夏令時間影響', () => {
     ['2026','02','03','23','4'], ['2026','06','20','23','6'],
     ['2026','01','01','00','5'],
     ['2028','02','04','15','2','00'], ['2028','02','04','15','2','40'],
+    ['2028','02','04','15','4','00'], ['2028','02','04','15','4','40'],
+    ['2028','02','04','15','5','00'], ['2028','02','04','15','5','40'],
+    ['2043','12','31','23','5','30'], ['2028','02','03','13','6','30'],
   ];
   const engine = new URL('../src/features/qimen/engine.js', import.meta.url).href;
   const source = `import {computeQiMen as c} from ${JSON.stringify(engine)}; console.log(JSON.stringify(${JSON.stringify(inputs)}.map(([y,m,d,h,s,mi])=>c(y,m,d,h,'auto',s,mi))));`;

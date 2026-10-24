@@ -19,7 +19,7 @@ function check(y,m,d,h,minute='30') {
     sameMembers(RING.map(p=>r.deityPan[p]),DEITIES,`${label} 八神`);
     sameMembers(RING.flatMap(p=>[r.heavenPan[p].stem,r.heavenPan[p].extraStem].filter(i=>i!=null).map(i=>GANS[i])),expectedStems,`${label} 天盤`);
     sameMembers(RING.flatMap(p=>[...r.outerStems[p]]),expectedStems,`${label} 外圈天干`);
-    const pillar = system==='6'?r.bazi.d:system==='4'?r.bazi.m:system==='5'?r.bazi.y:r.bazi.h;
+    const pillar = system==='6'?r.bazi.d:system==='4'?r.chartPillar:system==='5'?r.bazi.y:r.bazi.h;
     const startBranch=(ZHIS.indexOf(pillar[1])-GANS.indexOf(pillar[0])+12)%12;
     assert.equal(r.xunText,`甲${ZHIS[startBranch]}`,`${label} 旬首`);
     assert.ok(STARS.includes(r.zhiFu) && DOORS.includes(r.zhiShi),`${label} 值符值使`);
