@@ -1,0 +1,14 @@
+{
+  "source": "https://star-artint.com/SATreasure/qimendunjia",
+  "checked_on": "2026-10-24",
+  "baseline_commit": "7f603242d1ff79955ace6f873956bfb6fafc66a6",
+  "candidate_version": "V19",
+  "system": "6",
+  "scope": "52 daily, 12 boundary, 12 cycle probes; 76 actual rendered charts",
+  "method": "Signed-in Browser UI; selected values checked; rendered PNG data URL; exact glyph pixels using existing templates; unknown glyph stops",
+  "template": "../reference-20261024/ju-header-templates.png",
+  "retained": "Original date and JU pixels in sheets; 2 full representative charts; source PNG sha256 per row",
+  "sheet_layout": "700x100 tile; two columns; date source (0,30,700,66) to (0,20); JU source (0,156,700,188) to (0,60)",
+  "reference_ju_origin": "reference glyphs only; engine_ju is V18 and engine_after_ju is V19; neither supplies reference values",
+  "full_chart_limit": "Outer stems absent on reference day chart; not externally verified"
+}

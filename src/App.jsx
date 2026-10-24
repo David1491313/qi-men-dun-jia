@@ -77,7 +77,7 @@ export default function QiMenDunJiaApp(){
       <div className="max-w-2xl mx-auto p-4 bg-white shadow-sm min-h-screen">
         <div className="mb-5 border-b border-gray-200 pb-4">
           <h1 className="text-xl font-bold flex items-center gap-2">奇門遁甲
-            <span className="text-xs font-normal bg-violet-100 text-violet-700 px-2 py-0.5 rounded-full">V18 冬至分時校正</span>
+            <span className="text-xs font-normal bg-violet-100 text-violet-700 px-2 py-0.5 rounded-full">V19 日家交界校正</span>
           </h1>
         </div>
         <div className="mb-4"><h2 className="text-sm font-bold text-gray-600 mb-2">設定時間</h2>

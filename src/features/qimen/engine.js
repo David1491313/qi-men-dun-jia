@@ -167,6 +167,20 @@ function isYinPanWinterYangJu(y, m, d, h, minute) {
   return inputClock>=boundary.clock;
 }
 
+// 日家依子初換日後的日期，在實際冬夏至日期切換；不能依甲子日挑最近節氣。
+// 日期以外的交節時分不參與日家轉遁，與陰盤的分時規則分開。
+const dayPanSolsticeCache = new Map();
+function getDayPanSolstices(year) {
+  if (!dayPanSolsticeCache.has(year)) {
+    const terms = Solar.fromYmd(year,7,1).getLunar().getJieQiTable();
+    dayPanSolsticeCache.set(year, [['夏至',false],['DONG_ZHI',true]].map(([key,isYang]) => {
+      const term=terms[key];
+      return {abs:toAbsDay(term.getYear(),term.getMonth(),term.getDay()),isYang};
+    }));
+  }
+  return dayPanSolsticeCache.get(year);
+}
+
 // ===== 主計算 =====
 const computeQiMen = (yStr, mStr, dStr, hStr, juSetting, system, minuteStr = '0') => {
   const y=parseInt(yStr),m=parseInt(mStr),d=parseInt(dStr),h=parseInt(hStr);
@@ -239,18 +253,15 @@ const computeQiMen = (yStr, mStr, dStr, hStr, juSetting, system, minuteStr = '0'
     const mf = (baziYear - 2024) * 12 + (baziMonthZhi - 2 + 12) % 12;
     juNum = ((7 - Math.floor(mf / 10)) % 9 + 9) % 9 || 9;
   } else if(system==='6'){
-    // 日家：180天三元循環法（4組驗證數據全部通過）
+    // 日家：先按日曆日期選已到達的冬夏至，再計算甲子循環元序。
     const targetAbs = Math.round((astroMid - REF_DATE) / 86400000);
     const jiaziAbs = targetAbs - dayIdx60;
     const cands = [];
-    for(let yr=aY-1; yr<=aY+1; yr++){
-      cands.push({abs:toAbsDay(yr,12,calcJieQiDay(yr,'冬至')),isYang:true});
-      cands.push({abs:toAbsDay(yr,6,calcJieQiDay(yr,'夏至')),isYang:false});
-    }
-    cands.sort((a,b)=>Math.abs(jiaziAbs-a.abs)-Math.abs(jiaziAbs-b.abs));
-    const closest=cands[0];
-    isYin=!closest.isYang;
-    const cycleIdx=Math.round((jiaziAbs-closest.abs)/60);
+    for(let yr=aY-1; yr<=aY; yr++) cands.push(...getDayPanSolstices(yr));
+    cands.sort((a,b)=>b.abs-a.abs);
+    const season=cands.find(c=>c.abs<=targetAbs);
+    isYin=!season.isYang;
+    const cycleIdx=Math.round((jiaziAbs-season.abs)/60);
     if(!isYin){
       const baseJu=[1,7,4][(cycleIdx%3+3)%3];
       juNum=(baseJu-1+(dayIdx60%9))%9+1;
@@ -258,7 +269,7 @@ const computeQiMen = (yStr, mStr, dStr, hStr, juSetting, system, minuteStr = '0'
       const baseJu=[9,3,6][(cycleIdx%3+3)%3];
       juNum=(baseJu-1-(dayIdx60%9)+9)%9+1;
     }
-    dunInfo={jieQi:closest.isYang?'冬至後':'夏至後',yuan:['上元','中元','下元'][(cycleIdx%3+3)%3],jqDay:dayIdx60+1};
+    dunInfo={jieQi:season.isYang?'冬至後':'夏至後',yuan:['上元','中元','下元'][(cycleIdx%3+3)%3],jqDay:dayIdx60+1};
   } else {
     // 時家置閏：使用機械式節氣系統
     const di=determineZhiRunJu(aY,aM,aD);
