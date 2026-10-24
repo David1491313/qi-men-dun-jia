@@ -1,6 +1,6 @@
 import lunarCalendar from 'lunar-javascript';
 
-const { Solar } = lunarCalendar;
+const { Solar, LunarYear } = lunarCalendar;
 
 const GANS = ['甲','乙','丙','丁','戊','己','庚','辛','壬','癸'];
 const ZHIS = ['子','丑','寅','卯','辰','巳','午','未','申','酉','戌','亥'];
@@ -147,14 +147,25 @@ function isBeforeYinPanSummer(y, m, d, h, minute) {
   return Solar.fromYmdHms(y,m,d,h,minute,0).toYmdHms() < yinPanSummerCache.get(y);
 }
 
-// 冬至仍保留既有規則：網站跨年對照有待確認，不在本次猜測替換。
-const isYinPanWinterYangJu = (y, m, d, h) => {
-  // 民用一月至五月仍屬上一冬至後陽遁。
+// 星彧陰盤冬至相容規則；不等同於當年的天文交節時刻。
+// 實盤顯示：冬至前已經過農曆閏月，取當年冬至時分；否則取前一年時分。
+// 日期仍取當年冬至日；冬至當日23時子初後視為次日陽遁。
+const yinPanWinterCache = new Map();
+function isYinPanWinterYangJu(y, m, d, h, minute) {
   if(m <= 5) return true;
-  const dzDay = calcJieQiDay(y, '冬至');
-  if(m===12 && d===dzDay) return h >= 12;
-  return m===12 && d>dzDay;
-};
+  if(!yinPanWinterCache.has(y)) {
+    const terms=Solar.fromYmd(y,7,1).getLunar().getJieQiTable();
+    const leapMonth=LunarYear.fromYear(y).getLeapMonth();
+    const clockTerm=leapMonth>0&&leapMonth<11 ? terms.DONG_ZHI : terms['冬至'];
+    yinPanWinterCache.set(y,{date:terms.DONG_ZHI.toYmd(),clock:clockTerm.toYmdHms().slice(11)});
+  }
+  const boundary=yinPanWinterCache.get(y);
+  const inputDate=Solar.fromYmd(y,m,d).toYmd();
+  if(inputDate!==boundary.date) return inputDate>boundary.date;
+  if(h>=23) return true;
+  const inputClock=`${String(h).padStart(2,'0')}:${String(minute).padStart(2,'0')}:00`;
+  return inputClock>=boundary.clock;
+}
 
 // ===== 主計算 =====
 const computeQiMen = (yStr, mStr, dStr, hStr, juSetting, system, minuteStr = '0') => {
@@ -214,7 +225,7 @@ const computeQiMen = (yStr, mStr, dStr, hStr, juSetting, system, minuteStr = '0'
     const yZhiForYinPan = ZHIS.indexOf(timeCalendar.getYearZhiExact());
     const isYang = m <= 6
       ? isBeforeYinPanSummer(y,m,d,h,Number(minuteStr))
-      : isYinPanWinterYangJu(y,m,d,h);
+      : isYinPanWinterYangJu(y,m,d,h,Number(minuteStr));
     isYin = !isYang;
     juNum=((yZhiForYinPan+1)+lunarM+lunarD+(hZhiIndex+1))%9||9;
   } else if(system==='5'){
