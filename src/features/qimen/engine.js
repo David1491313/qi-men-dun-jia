@@ -1,4 +1,5 @@
 import lunarCalendar from 'lunar-javascript';
+import {getReferenceCalendar} from './reference-calendar.js';
 
 const { Solar, LunarYear } = lunarCalendar;
 
@@ -208,15 +209,15 @@ const computeQiMen = (yStr, mStr, dStr, hStr, juSetting, system, minuteStr = '0'
   const aY=astroDate.getUTCFullYear(), aM=astroDate.getUTCMonth()+1, aD=astroDate.getUTCDate();
   // 子初先換日，交節也使用換日後的00時並保留分鐘。
   // 例如立春在23時或次日00時時，不能讓年/月柱仍停留原日。
-  const timeCalendar = Solar.fromYmdHms(aY,aM,aD,Number(astroHStr),Number(minuteStr),0).getLunar();
+  const timeCalendar = getReferenceCalendar(aY,aM,aD,Number(astroHStr),Number(minuteStr));
   // 本輪實盤月家採交節整日的月柱起盤，與顯示四柱不同；23時推進日期。
   // 年家則以子初換日後時刻的立春年柱起盤，不能套月家的整日規則。
-  const monthCalendar = system === '4' ? Solar.fromYmd(aY,aM,aD).getLunar() : null;
+  const monthCalendar = system === '4' ? getReferenceCalendar(aY,aM,aD,0,0,true) : null;
   const periodYear = monthCalendar ? monthCalendar.getYearInGanZhiByLiChun() : timeCalendar.getYearInGanZhiExact();
   const yGanIndex=GANS.indexOf(periodYear[0]), yZhiIndex=ZHIS.indexOf(periodYear[1]);
   const civilYear=monthCalendar ? aY : y;
   const civilYearPillar=GANS[(civilYear-4)%10]+ZHIS[(civilYear-4)%12];
-  const baziYear=civilYear-(periodYear===civilYearPillar ? 0 : 1);
+  const baziYear=civilYear-(timeCalendar.getYearInGanZhiExact()===civilYearPillar ? 0 : 1);
   const baziMonthZhi=monthCalendar ? monthCalendar.getMonthZhiIndex() : timeCalendar.getMonthZhiIndexExact();
   const mGanIndex=monthCalendar ? monthCalendar.getMonthGanIndex() : timeCalendar.getMonthGanIndexExact();
   const bazi = {
@@ -249,10 +250,15 @@ const computeQiMen = (yStr, mStr, dStr, hStr, juSetting, system, minuteStr = '0'
     const yf=((aY-1864)%180+180)%180;
     juNum=[1,4,7][Math.floor(yf/60)];
   } else if(system==='4'){
-    // 月家：統一公式，全用陰遁
+    // 月家：五年一元、十五年一循環；元序按立春時分切換。
+    // 起盤月柱仍採交節整日。換元年立春前兩者可分屬不同元，
+    // 不可再用「整日年柱 * 12 + 月支」合成連續月份來推算局數。
     isYin=true;
-    const mf = (baziYear - 2024) * 12 + (baziMonthZhi - 2 + 12) % 12;
-    juNum = ((7 - Math.floor(mf / 10)) % 9 + 9) % 9 || 9;
+    const yearIn15=((baziYear-1864)%15+15)%15;
+    const baseJu=[1,4,7][Math.floor(yearIn15/5)];
+    const monthIndex=Array.from({length:60},(_,i)=>i).find(i=>i%10===mGanIndex&&i%12===baziMonthZhi);
+    const monthIn60=(monthIndex-2+60)%60; // 甲/己年丙寅月為五年元起點。
+    juNum=((baseJu-1-Math.floor(monthIn60/10))%9+9)%9+1;
   } else if(system==='6'){
     // 日家：先按日曆日期選已到達的冬夏至，再計算甲子循環元序。
     const targetAbs = Math.round((astroMid - REF_DATE) / 86400000);
