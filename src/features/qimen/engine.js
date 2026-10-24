@@ -149,7 +149,7 @@ function isBeforeYinPanSummer(y, m, d, h, minute) {
 
 // 冬至仍保留既有規則：網站跨年對照有待確認，不在本次猜測替換。
 const isYinPanWinterYangJu = (y, m, d, h) => {
-  // 12/31 的 23 時子初換日後可已是次年一月，仍屬冬至後陽遁。
+  // 民用一月至五月仍屬上一冬至後陽遁。
   if(m <= 5) return true;
   const dzDay = calcJieQiDay(y, '冬至');
   if(m===12 && d===dzDay) return h >= 12;
@@ -214,7 +214,7 @@ const computeQiMen = (yStr, mStr, dStr, hStr, juSetting, system, minuteStr = '0'
     const yZhiForYinPan = ZHIS.indexOf(timeCalendar.getYearZhiExact());
     const isYang = m <= 6
       ? isBeforeYinPanSummer(y,m,d,h,Number(minuteStr))
-      : isYinPanWinterYangJu(aY,aM,aD,h);
+      : isYinPanWinterYangJu(y,m,d,h);
     isYin = !isYang;
     juNum=((yZhiForYinPan+1)+lunarM+lunarD+(hZhiIndex+1))%9||9;
   } else if(system==='5'){
