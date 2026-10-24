@@ -1,0 +1,47 @@
+[
+  {
+    "id": "4-198402042259",
+    "input": {
+      "system": "4",
+      "year": 1984,
+      "month": 2,
+      "day": 4,
+      "hour": 22,
+      "minute": 59
+    },
+    "first_png_sha256": "d3f721c78f5f772041077a5c27d489c53b5bcbc606b1da0b3d0042aefcf002d8",
+    "second_png_sha256": "d3f721c78f5f772041077a5c27d489c53b5bcbc606b1da0b3d0042aefcf002d8",
+    "identical": true,
+    "second_capture_saved_at_utc": "2026-10-24T13:41:02.284985+00:00"
+  },
+  {
+    "id": "5-204402041244",
+    "input": {
+      "system": "5",
+      "year": 2044,
+      "month": 2,
+      "day": 4,
+      "hour": 12,
+      "minute": 44
+    },
+    "first_png_sha256": "007d8f1f7a4f8fa3e6c8005aa37f99a00ae2fb45c997c5f6ea77cb4c3565112a",
+    "second_png_sha256": "007d8f1f7a4f8fa3e6c8005aa37f99a00ae2fb45c997c5f6ea77cb4c3565112a",
+    "identical": true,
+    "second_capture_saved_at_utc": "2026-10-24T13:41:13.216803+00:00"
+  },
+  {
+    "id": "5-210002040300",
+    "input": {
+      "system": "5",
+      "year": 2100,
+      "month": 2,
+      "day": 4,
+      "hour": 3,
+      "minute": 0
+    },
+    "first_png_sha256": "c6411f3fa1bc1aa555978010e347d257e9384b8c702f85f1b2dfb865ec48ea5a",
+    "second_png_sha256": "c6411f3fa1bc1aa555978010e347d257e9384b8c702f85f1b2dfb865ec48ea5a",
+    "identical": true,
+    "second_capture_saved_at_utc": "2026-10-24T13:41:22.448649+00:00"
+  }
+]

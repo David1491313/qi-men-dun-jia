@@ -1,0 +1,37 @@
+{
+  "checked_on": "2026-10-24",
+  "baseline_commit": "7d50cd10b44cc674a87e2ed5fd8427ccd226b339",
+  "candidate": "V20",
+  "source": "https://star-artint.com/SATreasure/qimendunjia",
+  "method": "Signed-in Browser visible forms and rendered original PNG; strict selected-input checks; manual independent glyph labeling followed by exact pixel comparison. No hidden website code.",
+  "total": 94,
+  "counts_by_system": {
+    "1": 2,
+    "2": 2,
+    "4": 50,
+    "5": 38,
+    "6": 2
+  },
+  "nine_field_matches_after": 91,
+  "fixed_cases": 7,
+  "remaining_ids": [
+    "4-198402042259",
+    "5-204402041244",
+    "5-210002040300"
+  ],
+  "remaining_repeated": "All 3 pending cases independently regenerated again; full PNG SHA256 identical",
+  "fields": [
+    "ju",
+    "xun",
+    "fu",
+    "star",
+    "door",
+    "empty",
+    "horse",
+    "bazi_y",
+    "bazi_m"
+  ],
+  "templates": "header-templates.json labels independently read from enlarged reference glyphs; header-templates.webp retains exact source patches",
+  "sheets": "700x300 tiles, two columns; original PNG top 280 pixels unmodified, ID label below original crop",
+  "limits": "Nine header fields only for all 94; full nine-palace comparison separately on 1980 year example. Outer stems absent on reference year/month/day charts. No all-date correctness claim."
+}
