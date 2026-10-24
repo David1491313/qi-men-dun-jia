@@ -3,9 +3,25 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {computeQiMen as c,RING,GANS,STARS,DOORS} from '../src/features/qimen/engine.js';
 
-// reference 均由網站原始盤圖字形獨立辨識。三筆未解差異另存，不當作通過。
+// reference 均由網站原始盤圖字形獨立辨識。JSON 的 pending 是 V20 歷史狀態。
 const rows=JSON.parse(readFileSync(new URL('../docs/period-expanded-20261024/results.json',import.meta.url),'utf8'));
 assert.deepEqual(rows.filter(r=>r.status==='pending').map(r=>r.id).sort(),['4-198402042259','5-204402041244','5-210002040300']);
+// V21 已修復三筆；保留原始網站預期值，改為強制通過的正式回歸。
+for (const e of rows.filter(r=>r.status==='pending')) test(`V21修復網站差異：${e.id}`, ()=>{
+  const r=c(String(e.year),String(e.month),String(e.day),String(e.hour),'auto',e.system,String(e.minute));
+  assert.deepEqual({ju:r.juText,xun:r.xunText,fu:r.fuText,star:r.zhiFu,door:r.zhiShi,empty:r.emptyText,horse:r.horseText,bazi_y:r.bazi.y,bazi_m:r.bazi.m},e.reference,e.id);
+});
+
+// Fresh visible reference charts, 2026-10-24: check the date printed in each image.
+// The Feb 4 mismatch also occurs at noon, away from the Zi-hour boundary.
+for (const [day,ju,star,door] of [['3','陰2','天芮','死門'],['5','陰1','天蓬','休門']]) test(`月家1984/2/${day} 12:00：未解日期相鄰盤`,()=>{
+  const r=c('1984','2',day,'12','auto','4','0');
+  assert.deepEqual([r.juText,r.zhiFu,r.zhiShi],[ju,star,door]);
+});
+test('月家1984/2/4 12:00：立春前沿用前元，非子初時段也陰七',()=>{
+  const r=c('1984','2','4','12','auto','4','0');
+  assert.deepEqual([r.juText,r.zhiFu,r.zhiShi],['陰7','天柱','驚門']);
+});
 for(const [system,total,verified]of[['1',2,2],['2',2,2],['4',50,49],['5',38,36],['6',2,2]])test(`擴大實盤系統${system}：${verified}/${total}組完整盤頭固定對照`,()=>{
   const group=rows.filter(r=>r.system===system);
   assert.equal(group.length,total);
