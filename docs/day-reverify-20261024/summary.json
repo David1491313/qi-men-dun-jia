@@ -1,0 +1,18 @@
+{
+  "checked_on": "2026-10-24",
+  "deployed_commit": "c89c588e6ce0284e96bffb80fcd37a875ceff8ab",
+  "app_version": "V19",
+  "system": "6",
+  "reference_url": "https://star-artint.com/SATreasure/qimendunjia",
+  "live_url": "https://david1491313.github.io/qi-men-dun-jia/",
+  "method": "Fresh signed-in reference UI chart generation and live production UI input for every case; exact JU glyph matching; explicit date and version checks; independent current-engine comparison",
+  "checked": 76,
+  "three_way_matches": 76,
+  "previously_failing_cases": 38,
+  "fresh_reference_pngs_identical_to_previous": 76,
+  "first_captured_at": "2026-10-24T10:15:40.093Z",
+  "last_captured_at": "2026-10-24T10:33:07.575Z",
+  "reference_evidence": "../day-daily-20261024/results.json and original date/JU pixel sheets; new full-PNG SHA256 verified against each original row",
+  "live_rendered_text_archive": "live-rendered.json.gz; UTF-8 JSON map id to visible rendered text; per-row SHA256 recorded",
+  "scope_limit": "All 76 external comparisons are JU only. Other live header fields compare UI to engine, not reference OCR. No new claim of full nine-palace or outer-stem verification."
+}
