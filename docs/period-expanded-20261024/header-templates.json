@@ -1,0 +1,1477 @@
+[
+  {
+    "field": "xun",
+    "index": 0,
+    "sha": "f8a838d4bc320fa177d0285d9eb96ce9d7ddc28e88f660adc58c11245e51219c",
+    "origin": "4-202501151230",
+    "box": [
+      91,
+      187,
+      147,
+      215
+    ],
+    "label": "甲戌",
+    "template_box": [
+      0,
+      20,
+      56,
+      48
+    ]
+  },
+  {
+    "field": "xun",
+    "index": 1,
+    "sha": "569438fa8b65c19e903c0453c96213e32b995272587586e34d9ca6f375f1bb47",
+    "origin": "4-202508151230",
+    "box": [
+      91,
+      187,
+      147,
+      215
+    ],
+    "label": "甲申",
+    "template_box": [
+      140,
+      20,
+      196,
+      48
+    ]
+  },
+  {
+    "field": "xun",
+    "index": 2,
+    "sha": "62f10a04db0adb94d4665393a04f5373d779256acc2ab04ab16e8c5f994bbb09",
+    "origin": "4-202801151230",
+    "box": [
+      91,
+      187,
+      147,
+      215
+    ],
+    "label": "甲辰",
+    "template_box": [
+      280,
+      20,
+      336,
+      48
+    ]
+  },
+  {
+    "field": "xun",
+    "index": 3,
+    "sha": "46f5891b0e192e3dc700a37cea499260119d76946c444bc2de5636a5a2510e77",
+    "origin": "4-202802151230",
+    "box": [
+      91,
+      187,
+      147,
+      215
+    ],
+    "label": "甲寅",
+    "template_box": [
+      420,
+      20,
+      476,
+      48
+    ]
+  },
+  {
+    "field": "xun",
+    "index": 4,
+    "sha": "40a6ce62a5ef998e928dd6ecb9bf54c81601d6bcf9db90b438f043b1d3fcbf20",
+    "origin": "4-202812151230",
+    "box": [
+      91,
+      187,
+      147,
+      215
+    ],
+    "label": "甲子",
+    "template_box": [
+      560,
+      20,
+      616,
+      48
+    ]
+  },
+  {
+    "field": "fu",
+    "index": 0,
+    "sha": "d2dc406b7f6cdd4d63a69390001b5e50487ed3adb5806abeef2e11d7be56204f",
+    "origin": "4-202501151230",
+    "box": [
+      91,
+      217,
+      119,
+      245
+    ],
+    "label": "己",
+    "template_box": [
+      700,
+      20,
+      728,
+      48
+    ]
+  },
+  {
+    "field": "fu",
+    "index": 1,
+    "sha": "3661775e69116e80473d216da89c7c9c726b68e17bad2dbee28e3c15c2c0803b",
+    "origin": "4-202508151230",
+    "box": [
+      91,
+      217,
+      119,
+      245
+    ],
+    "label": "庚",
+    "template_box": [
+      0,
+      90,
+      28,
+      118
+    ]
+  },
+  {
+    "field": "fu",
+    "index": 2,
+    "sha": "49f750de9c4d43874f36c98a1d1118f1a78d87f10baab7d3a3e84c1720285993",
+    "origin": "4-202801151230",
+    "box": [
+      91,
+      217,
+      119,
+      245
+    ],
+    "label": "壬",
+    "template_box": [
+      140,
+      90,
+      168,
+      118
+    ]
+  },
+  {
+    "field": "fu",
+    "index": 3,
+    "sha": "b22997e2106531b28f82b51071b2af5dda3a2813014ddebccf73024794cb9cc1",
+    "origin": "4-202802151230",
+    "box": [
+      91,
+      217,
+      119,
+      245
+    ],
+    "label": "癸",
+    "template_box": [
+      280,
+      90,
+      308,
+      118
+    ]
+  },
+  {
+    "field": "fu",
+    "index": 4,
+    "sha": "4b595b2e5d6ef410342839ea84d3376c966408533b3b118d8c84785de808dd9e",
+    "origin": "4-202812151230",
+    "box": [
+      91,
+      217,
+      119,
+      245
+    ],
+    "label": "戊",
+    "template_box": [
+      420,
+      90,
+      448,
+      118
+    ]
+  },
+  {
+    "field": "star",
+    "index": 0,
+    "sha": "05708542371d8b8add8b6214197002296eaf5307b792592c9137472cdb7c1d81",
+    "origin": "4-202501151230",
+    "box": [
+      91,
+      247,
+      147,
+      275
+    ],
+    "label": "天芮",
+    "template_box": [
+      560,
+      90,
+      616,
+      118
+    ]
+  },
+  {
+    "field": "star",
+    "index": 1,
+    "sha": "54c5e61c499238108595f8b01597e7ceb6592cf55d2a8dffef28d32d85aaf0d8",
+    "origin": "4-202508151230",
+    "box": [
+      91,
+      247,
+      147,
+      275
+    ],
+    "label": "天輔",
+    "template_box": [
+      700,
+      90,
+      756,
+      118
+    ]
+  },
+  {
+    "field": "star",
+    "index": 2,
+    "sha": "61ed2710334f225cae2dd473c161e56887a7635cc52ef3fd618a174960fb6ac6",
+    "origin": "4-202510151230",
+    "box": [
+      91,
+      247,
+      147,
+      275
+    ],
+    "label": "天沖",
+    "template_box": [
+      0,
+      160,
+      56,
+      188
+    ]
+  },
+  {
+    "field": "star",
+    "index": 3,
+    "sha": "36d3aaed81004bfaf994f388b8e446d9f3048ac97a891298b61f656fc7390fb1",
+    "origin": "4-202801151230",
+    "box": [
+      91,
+      247,
+      147,
+      275
+    ],
+    "label": "天任",
+    "template_box": [
+      140,
+      160,
+      196,
+      188
+    ]
+  },
+  {
+    "field": "star",
+    "index": 4,
+    "sha": "eaf2332bc361ee168c2536b1dc35f9e953b32d80fc726f8c171de1452e76b6b2",
+    "origin": "4-202802151230",
+    "box": [
+      91,
+      247,
+      147,
+      275
+    ],
+    "label": "天柱",
+    "template_box": [
+      280,
+      160,
+      336,
+      188
+    ]
+  },
+  {
+    "field": "star",
+    "index": 5,
+    "sha": "bafe434515fee05469ff289e22d983320fc200c55f9615391c679bb71795abd1",
+    "origin": "4-202804151230",
+    "box": [
+      91,
+      247,
+      147,
+      275
+    ],
+    "label": "天心",
+    "template_box": [
+      420,
+      160,
+      476,
+      188
+    ]
+  },
+  {
+    "field": "door",
+    "index": 0,
+    "sha": "d9cda935505ffa0033c383c3b04ba66686b67c8dc93f86163942e41f89067b45",
+    "origin": "4-202501151230",
+    "box": [
+      391,
+      247,
+      447,
+      275
+    ],
+    "label": "死門",
+    "template_box": [
+      560,
+      160,
+      616,
+      188
+    ]
+  },
+  {
+    "field": "door",
+    "index": 1,
+    "sha": "972bf5e1ccc5fc7013bc3f3381404c8d22150c4cb9dc18e03a7a45b3328a52fe",
+    "origin": "4-202508151230",
+    "box": [
+      391,
+      247,
+      447,
+      275
+    ],
+    "label": "杜門",
+    "template_box": [
+      700,
+      160,
+      756,
+      188
+    ]
+  },
+  {
+    "field": "door",
+    "index": 2,
+    "sha": "8500197eeaa983061b1e22c670041f28eb39dc969b92868a334e057c687c37ac",
+    "origin": "4-202510151230",
+    "box": [
+      391,
+      247,
+      447,
+      275
+    ],
+    "label": "傷門",
+    "template_box": [
+      0,
+      230,
+      56,
+      258
+    ]
+  },
+  {
+    "field": "door",
+    "index": 3,
+    "sha": "85624eb642c53ed95265b9fed894a7aa2548e6600522fbf07da1c98cf42811a9",
+    "origin": "4-202801151230",
+    "box": [
+      391,
+      247,
+      447,
+      275
+    ],
+    "label": "生門",
+    "template_box": [
+      140,
+      230,
+      196,
+      258
+    ]
+  },
+  {
+    "field": "door",
+    "index": 4,
+    "sha": "5196e81d98da0ec2618bc4ac60460793f0d2d3bace68be4399818a61a3f406ac",
+    "origin": "4-202802151230",
+    "box": [
+      391,
+      247,
+      447,
+      275
+    ],
+    "label": "驚門",
+    "template_box": [
+      280,
+      230,
+      336,
+      258
+    ]
+  },
+  {
+    "field": "door",
+    "index": 5,
+    "sha": "77f6c956698db62b5a186169b7b879af9e1c00a8506dd2d3906cf570ac268d13",
+    "origin": "4-202804151230",
+    "box": [
+      391,
+      247,
+      447,
+      275
+    ],
+    "label": "開門",
+    "template_box": [
+      420,
+      230,
+      476,
+      258
+    ]
+  },
+  {
+    "field": "empty",
+    "index": 0,
+    "sha": "f455d26ceb364107e9ae46d19f47f2dac79458e3b85bda6658ce4211d66fc9a8",
+    "origin": "4-202501151230",
+    "box": [
+      391,
+      187,
+      447,
+      215
+    ],
+    "label": "申酉",
+    "template_box": [
+      560,
+      230,
+      616,
+      258
+    ]
+  },
+  {
+    "field": "empty",
+    "index": 1,
+    "sha": "fd698839a5f3780cd00e92d847d277b290033477ac388a806a547ddcdfb393c9",
+    "origin": "4-202508151230",
+    "box": [
+      391,
+      187,
+      447,
+      215
+    ],
+    "label": "午未",
+    "template_box": [
+      700,
+      230,
+      756,
+      258
+    ]
+  },
+  {
+    "field": "empty",
+    "index": 2,
+    "sha": "643b82fd7e932e660d2eb358e979e6d623e5a5e00f670158b2a36729ce942cf3",
+    "origin": "4-202801151230",
+    "box": [
+      391,
+      187,
+      447,
+      215
+    ],
+    "label": "寅卯",
+    "template_box": [
+      0,
+      300,
+      56,
+      328
+    ]
+  },
+  {
+    "field": "empty",
+    "index": 3,
+    "sha": "b6937737ff8ce41e03ac00cd56bf94818e669e5d302cb7e365f23324d40e6768",
+    "origin": "4-202802151230",
+    "box": [
+      391,
+      187,
+      447,
+      215
+    ],
+    "label": "子丑",
+    "template_box": [
+      140,
+      300,
+      196,
+      328
+    ]
+  },
+  {
+    "field": "empty",
+    "index": 4,
+    "sha": "2b649a31f52f18b3daa8bf8fa138086bde38c409d7eaaf6173c1d8a8ebe3b889",
+    "origin": "4-202812151230",
+    "box": [
+      391,
+      187,
+      447,
+      215
+    ],
+    "label": "戌亥",
+    "template_box": [
+      280,
+      300,
+      336,
+      328
+    ]
+  },
+  {
+    "field": "horse",
+    "index": 0,
+    "sha": "47cdc7f65a310f9f8107215eccd4733875ef3a57f2e8048645ad5b86e107e4e5",
+    "origin": "4-202501151230",
+    "box": [
+      391,
+      217,
+      419,
+      245
+    ],
+    "label": "亥",
+    "template_box": [
+      420,
+      300,
+      448,
+      328
+    ]
+  },
+  {
+    "field": "horse",
+    "index": 1,
+    "sha": "84249a2934db1776c9d03d5bbcbf82a46192046e4be5b25111fd4a6c26a93de4",
+    "origin": "4-202502151230",
+    "box": [
+      391,
+      217,
+      419,
+      245
+    ],
+    "label": "申",
+    "template_box": [
+      560,
+      300,
+      588,
+      328
+    ]
+  },
+  {
+    "field": "horse",
+    "index": 2,
+    "sha": "afafd73b349cd4f70c5c21c54579dad8f9342588ec0591d0f07792c28bd119ce",
+    "origin": "4-202503151230",
+    "box": [
+      391,
+      217,
+      419,
+      245
+    ],
+    "label": "巳",
+    "template_box": [
+      700,
+      300,
+      728,
+      328
+    ]
+  },
+  {
+    "field": "horse",
+    "index": 3,
+    "sha": "658575846fe45d6ad5768ecc86f21d7b47e3cc8a4e1647cb827e7543e837e1ec",
+    "origin": "4-202504151230",
+    "box": [
+      391,
+      217,
+      419,
+      245
+    ],
+    "label": "寅",
+    "template_box": [
+      0,
+      370,
+      28,
+      398
+    ]
+  },
+  {
+    "field": "star",
+    "sha": "e59331c4487dd51deb8e4bc78e2da7a36721fa674acdf9220b632db98d936698",
+    "label": "天英",
+    "origin": "4-190101151230",
+    "box": [
+      91,
+      247,
+      147,
+      275
+    ],
+    "template_box": [
+      140,
+      370,
+      196,
+      398
+    ]
+  },
+  {
+    "field": "door",
+    "sha": "e4ad6ef27275a58cf7e676bee069b467b6d3d213cc0aebd0caa518e1dde300a4",
+    "label": "景門",
+    "origin": "4-190101151230",
+    "box": [
+      391,
+      247,
+      447,
+      275
+    ],
+    "template_box": [
+      280,
+      370,
+      336,
+      398
+    ]
+  },
+  {
+    "field": "xun",
+    "sha": "ed2350c5f619451894f426ada49910acd255064c424e96d27d98190c0fe6eba5",
+    "label": "甲午",
+    "origin": "4-190112151230",
+    "box": [
+      91,
+      187,
+      147,
+      215
+    ],
+    "template_box": [
+      420,
+      370,
+      476,
+      398
+    ]
+  },
+  {
+    "field": "fu",
+    "sha": "68b122b5624a082329c6800c8ceb523d84ebcd5d8aa4d48925307906e23cb5f4",
+    "label": "辛",
+    "origin": "4-190112151230",
+    "box": [
+      91,
+      217,
+      119,
+      245
+    ],
+    "template_box": [
+      560,
+      370,
+      588,
+      398
+    ]
+  },
+  {
+    "field": "empty",
+    "sha": "5b27d8146e86f0735b1dc20f8f722bc23d908977002fe48be4a2f3b4409930e8",
+    "label": "辰巳",
+    "origin": "4-190112151230",
+    "box": [
+      391,
+      187,
+      447,
+      215
+    ],
+    "template_box": [
+      700,
+      370,
+      756,
+      398
+    ]
+  },
+  {
+    "field": "star",
+    "sha": "5026c66bb0230d40def38003bf3c430c54d710eddc746fdea51657f7cda7e760",
+    "label": "天蓬",
+    "origin": "5-204402041244",
+    "box": [
+      91,
+      247,
+      147,
+      275
+    ],
+    "template_box": [
+      0,
+      440,
+      56,
+      468
+    ]
+  },
+  {
+    "field": "door",
+    "sha": "eaee92261ec028764cbd8b71344008dee1d066f113645f42220049a033566b44",
+    "label": "休門",
+    "origin": "5-204402041244",
+    "box": [
+      391,
+      247,
+      447,
+      275
+    ],
+    "template_box": [
+      140,
+      440,
+      196,
+      468
+    ]
+  },
+  {
+    "group": "gan",
+    "field": "year_gan",
+    "sha": "3661775e69116e80473d216da89c7c9c726b68e17bad2dbee28e3c15c2c0803b",
+    "origin": "4-190101151230",
+    "box": [
+      91,
+      97,
+      119,
+      125
+    ],
+    "label": "庚",
+    "template_box": [
+      280,
+      440,
+      308,
+      468
+    ]
+  },
+  {
+    "group": "zhi",
+    "field": "year_zhi",
+    "sha": "0688258cccafc4fc9c9d33369aefe82961b5e80c4ed1156b8e3d1a7ad773f35e",
+    "origin": "4-190101151230",
+    "box": [
+      91,
+      127,
+      119,
+      155
+    ],
+    "label": "子",
+    "template_box": [
+      420,
+      440,
+      448,
+      468
+    ]
+  },
+  {
+    "group": "gan",
+    "field": "month_gan",
+    "sha": "9e336e5610512ea5ef6f1720540c287c1b07b4d8a105aa5a2640fe161588ef24",
+    "origin": "4-190101151230",
+    "box": [
+      161,
+      97,
+      189,
+      125
+    ],
+    "label": "己",
+    "template_box": [
+      560,
+      440,
+      588,
+      468
+    ]
+  },
+  {
+    "group": "zhi",
+    "field": "month_zhi",
+    "sha": "733e432ace0766609bb8c815b784ee1b110785b41e97f8e61a7050174e8a1d2f",
+    "origin": "4-190101151230",
+    "box": [
+      161,
+      127,
+      189,
+      155
+    ],
+    "label": "丑",
+    "template_box": [
+      700,
+      440,
+      728,
+      468
+    ]
+  },
+  {
+    "group": "gan",
+    "field": "year_gan",
+    "sha": "68b122b5624a082329c6800c8ceb523d84ebcd5d8aa4d48925307906e23cb5f4",
+    "origin": "4-190112151230",
+    "box": [
+      91,
+      97,
+      119,
+      125
+    ],
+    "label": "辛",
+    "template_box": [
+      0,
+      510,
+      28,
+      538
+    ]
+  },
+  {
+    "group": "zhi",
+    "field": "year_zhi",
+    "sha": "28dde454f7b62cd84f43b21bebf12ac12a7ec7370dc32d48c6792ec4f785f745",
+    "origin": "4-190112151230",
+    "box": [
+      91,
+      127,
+      119,
+      155
+    ],
+    "label": "丑",
+    "template_box": [
+      140,
+      510,
+      168,
+      538
+    ]
+  },
+  {
+    "group": "gan",
+    "field": "month_gan",
+    "sha": "030382ab0883d839690b98e0bd0fdc0179ba771896af33dd027ffe25f8f2d3c6",
+    "origin": "4-190112151230",
+    "box": [
+      161,
+      97,
+      189,
+      125
+    ],
+    "label": "庚",
+    "template_box": [
+      280,
+      510,
+      308,
+      538
+    ]
+  },
+  {
+    "group": "zhi",
+    "field": "month_zhi",
+    "sha": "4b9d62b57b89ee31602d0f432858302826283f6f4396c4e81b12bf8fa693e248",
+    "origin": "4-190112151230",
+    "box": [
+      161,
+      127,
+      189,
+      155
+    ],
+    "label": "子",
+    "template_box": [
+      420,
+      510,
+      448,
+      538
+    ]
+  },
+  {
+    "group": "gan",
+    "field": "year_gan",
+    "sha": "b22997e2106531b28f82b51071b2af5dda3a2813014ddebccf73024794cb9cc1",
+    "origin": "4-192401151230",
+    "box": [
+      91,
+      97,
+      119,
+      125
+    ],
+    "label": "癸",
+    "template_box": [
+      560,
+      510,
+      588,
+      538
+    ]
+  },
+  {
+    "group": "zhi",
+    "field": "year_zhi",
+    "sha": "47cdc7f65a310f9f8107215eccd4733875ef3a57f2e8048645ad5b86e107e4e5",
+    "origin": "4-192401151230",
+    "box": [
+      91,
+      127,
+      119,
+      155
+    ],
+    "label": "亥",
+    "template_box": [
+      700,
+      510,
+      728,
+      538
+    ]
+  },
+  {
+    "group": "gan",
+    "field": "month_gan",
+    "sha": "051d25d33b2bc80999db22ec7321ffa031e8d521562454bea75bf98d833edd6c",
+    "origin": "4-192401151230",
+    "box": [
+      161,
+      97,
+      189,
+      125
+    ],
+    "label": "乙",
+    "template_box": [
+      0,
+      580,
+      28,
+      608
+    ]
+  },
+  {
+    "group": "gan",
+    "field": "year_gan",
+    "sha": "c57b897a5069e9a1c6739f7b2b7ce28ead3daedc3ae1d943cddc4d16b3df79e2",
+    "origin": "4-192412151230",
+    "box": [
+      91,
+      97,
+      119,
+      125
+    ],
+    "label": "甲",
+    "template_box": [
+      140,
+      580,
+      168,
+      608
+    ]
+  },
+  {
+    "group": "gan",
+    "field": "month_gan",
+    "sha": "eef277990239deb67ef1bb8ddff55978f9855aea21c955230aa6ea5cb3f07e39",
+    "origin": "4-192412151230",
+    "box": [
+      161,
+      97,
+      189,
+      125
+    ],
+    "label": "丙",
+    "template_box": [
+      280,
+      580,
+      308,
+      608
+    ]
+  },
+  {
+    "group": "zhi",
+    "field": "year_zhi",
+    "sha": "88de5f258328df14d360abad7110a0da6af950185c9a3d22c667c7dc6e8f6ec7",
+    "origin": "4-202501151230",
+    "box": [
+      91,
+      127,
+      119,
+      155
+    ],
+    "label": "辰",
+    "template_box": [
+      420,
+      580,
+      448,
+      608
+    ]
+  },
+  {
+    "group": "gan",
+    "field": "month_gan",
+    "sha": "b0c1966e72f04f3669bac24e36a4534c823cb72ea1217c5be25fcd8fcd6e6440",
+    "origin": "4-202501151230",
+    "box": [
+      161,
+      97,
+      189,
+      125
+    ],
+    "label": "丁",
+    "template_box": [
+      560,
+      580,
+      588,
+      608
+    ]
+  },
+  {
+    "group": "gan",
+    "field": "year_gan",
+    "sha": "383a37ec3e500c868e75cf2b88555939d200dd73d23da8ba30c00f29da73cf50",
+    "origin": "4-202502151230",
+    "box": [
+      91,
+      97,
+      119,
+      125
+    ],
+    "label": "乙",
+    "template_box": [
+      700,
+      580,
+      728,
+      608
+    ]
+  },
+  {
+    "group": "zhi",
+    "field": "year_zhi",
+    "sha": "afafd73b349cd4f70c5c21c54579dad8f9342588ec0591d0f07792c28bd119ce",
+    "origin": "4-202502151230",
+    "box": [
+      91,
+      127,
+      119,
+      155
+    ],
+    "label": "巳",
+    "template_box": [
+      0,
+      650,
+      28,
+      678
+    ]
+  },
+  {
+    "group": "gan",
+    "field": "month_gan",
+    "sha": "9816cc7473e835b49efcc52afbe23fe3cdc8f1dea075c3217886ee644908b4fc",
+    "origin": "4-202502151230",
+    "box": [
+      161,
+      97,
+      189,
+      125
+    ],
+    "label": "戊",
+    "template_box": [
+      140,
+      650,
+      168,
+      678
+    ]
+  },
+  {
+    "group": "zhi",
+    "field": "month_zhi",
+    "sha": "495cd70ceca618a2732a89b4f6bc25450b5dab8133d37993a1cb3e0f2091fca5",
+    "origin": "4-202502151230",
+    "box": [
+      161,
+      127,
+      189,
+      155
+    ],
+    "label": "寅",
+    "template_box": [
+      280,
+      650,
+      308,
+      678
+    ]
+  },
+  {
+    "group": "zhi",
+    "field": "month_zhi",
+    "sha": "eda1bf6b4d0b87f18815a7f1694066e7847b5c1104fab78c25f35e68d349933a",
+    "origin": "4-202503151230",
+    "box": [
+      161,
+      127,
+      189,
+      155
+    ],
+    "label": "卯",
+    "template_box": [
+      420,
+      650,
+      448,
+      678
+    ]
+  },
+  {
+    "group": "zhi",
+    "field": "month_zhi",
+    "sha": "e6eb60be2a5dc211dddca760c9e48e8f77c58a45fd39888debb4c109932c1020",
+    "origin": "4-202504151230",
+    "box": [
+      161,
+      127,
+      189,
+      155
+    ],
+    "label": "辰",
+    "template_box": [
+      560,
+      650,
+      588,
+      678
+    ]
+  },
+  {
+    "group": "gan",
+    "field": "month_gan",
+    "sha": "926a645ec8e4fc565be697cfb23cc4769e731fa977138fc63011dfb1376c97bd",
+    "origin": "4-202505151230",
+    "box": [
+      161,
+      97,
+      189,
+      125
+    ],
+    "label": "辛",
+    "template_box": [
+      700,
+      650,
+      728,
+      678
+    ]
+  },
+  {
+    "group": "zhi",
+    "field": "month_zhi",
+    "sha": "b528e9b5ebb7f46ac0cb23431133792e03b00d48b42a43fbea37b95541dfbd88",
+    "origin": "4-202505151230",
+    "box": [
+      161,
+      127,
+      189,
+      155
+    ],
+    "label": "巳",
+    "template_box": [
+      0,
+      720,
+      28,
+      748
+    ]
+  },
+  {
+    "group": "gan",
+    "field": "month_gan",
+    "sha": "1649cd819321bd1b1f493ea9d667966d4ee991374b1cf4139431216c7deefe28",
+    "origin": "4-202506151230",
+    "box": [
+      161,
+      97,
+      189,
+      125
+    ],
+    "label": "壬",
+    "template_box": [
+      140,
+      720,
+      168,
+      748
+    ]
+  },
+  {
+    "group": "zhi",
+    "field": "month_zhi",
+    "sha": "1d26b78ff4cf34086fa0a6059012731dbff47c80477a7ba6a57b92ab21d8891e",
+    "origin": "4-202506151230",
+    "box": [
+      161,
+      127,
+      189,
+      155
+    ],
+    "label": "午",
+    "template_box": [
+      280,
+      720,
+      308,
+      748
+    ]
+  },
+  {
+    "group": "gan",
+    "field": "month_gan",
+    "sha": "e191227cfb3eb8f0f852b54bd46a833084aae58a4ab01f3b0049261aa45f02cb",
+    "origin": "4-202507151230",
+    "box": [
+      161,
+      97,
+      189,
+      125
+    ],
+    "label": "癸",
+    "template_box": [
+      420,
+      720,
+      448,
+      748
+    ]
+  },
+  {
+    "group": "zhi",
+    "field": "month_zhi",
+    "sha": "965b029db8cedab2d0500c0c5a75c6c637958571ae42932a00e7cb9e2c71635a",
+    "origin": "4-202507151230",
+    "box": [
+      161,
+      127,
+      189,
+      155
+    ],
+    "label": "未",
+    "template_box": [
+      560,
+      720,
+      588,
+      748
+    ]
+  },
+  {
+    "group": "gan",
+    "field": "month_gan",
+    "sha": "45fd7a8ef88a9ae0fa9821e4d966c0f2ef56aebd220a199291e79d9d8bf5da96",
+    "origin": "4-202508151230",
+    "box": [
+      161,
+      97,
+      189,
+      125
+    ],
+    "label": "甲",
+    "template_box": [
+      700,
+      720,
+      728,
+      748
+    ]
+  },
+  {
+    "group": "zhi",
+    "field": "month_zhi",
+    "sha": "042f1b20dc0ff1cdb1ef55a4752f074293e36285e6ce921cb0b5f86a51b42ec4",
+    "origin": "4-202508151230",
+    "box": [
+      161,
+      127,
+      189,
+      155
+    ],
+    "label": "申",
+    "template_box": [
+      0,
+      790,
+      28,
+      818
+    ]
+  },
+  {
+    "group": "zhi",
+    "field": "month_zhi",
+    "sha": "47598c5b7e8e93f5945820bcecb9b4c9ccbe77e4c298ed2d24b9fec4217609c6",
+    "origin": "4-202509151230",
+    "box": [
+      161,
+      127,
+      189,
+      155
+    ],
+    "label": "酉",
+    "template_box": [
+      140,
+      790,
+      168,
+      818
+    ]
+  },
+  {
+    "group": "zhi",
+    "field": "month_zhi",
+    "sha": "878e7a2ef10584afa46911645e6324b0a48d15d739c40cc3feea35e053034dc8",
+    "origin": "4-202510151230",
+    "box": [
+      161,
+      127,
+      189,
+      155
+    ],
+    "label": "戌",
+    "template_box": [
+      280,
+      790,
+      308,
+      818
+    ]
+  },
+  {
+    "group": "zhi",
+    "field": "month_zhi",
+    "sha": "172b4c87d5f2760edebd62ab0eb11e2faec0c060d3bd340e6d9fb638ec3be4d9",
+    "origin": "4-202511151230",
+    "box": [
+      161,
+      127,
+      189,
+      155
+    ],
+    "label": "亥",
+    "template_box": [
+      420,
+      790,
+      448,
+      818
+    ]
+  },
+  {
+    "group": "gan",
+    "field": "year_gan",
+    "sha": "b32610e8ee156eb70cffeba754c4732c97d7e4587263d7d9613badabc119f730",
+    "origin": "4-202801151230",
+    "box": [
+      91,
+      97,
+      119,
+      125
+    ],
+    "label": "丁",
+    "template_box": [
+      560,
+      790,
+      588,
+      818
+    ]
+  },
+  {
+    "group": "zhi",
+    "field": "year_zhi",
+    "sha": "3e1230b150c8606f5e5824c3242762b453ce19585a84095b22b9eacbb1e1124c",
+    "origin": "4-202801151230",
+    "box": [
+      91,
+      127,
+      119,
+      155
+    ],
+    "label": "未",
+    "template_box": [
+      700,
+      790,
+      728,
+      818
+    ]
+  },
+  {
+    "group": "gan",
+    "field": "year_gan",
+    "sha": "4b595b2e5d6ef410342839ea84d3376c966408533b3b118d8c84785de808dd9e",
+    "origin": "4-202802041532",
+    "box": [
+      91,
+      97,
+      119,
+      125
+    ],
+    "label": "戊",
+    "template_box": [
+      0,
+      860,
+      28,
+      888
+    ]
+  },
+  {
+    "group": "zhi",
+    "field": "year_zhi",
+    "sha": "84249a2934db1776c9d03d5bbcbf82a46192046e4be5b25111fd4a6c26a93de4",
+    "origin": "4-202802041532",
+    "box": [
+      91,
+      127,
+      119,
+      155
+    ],
+    "label": "申",
+    "template_box": [
+      140,
+      860,
+      168,
+      888
+    ]
+  },
+  {
+    "group": "gan",
+    "field": "year_gan",
+    "sha": "d2dc406b7f6cdd4d63a69390001b5e50487ed3adb5806abeef2e11d7be56204f",
+    "origin": "4-210001151230",
+    "box": [
+      91,
+      97,
+      119,
+      125
+    ],
+    "label": "己",
+    "template_box": [
+      280,
+      860,
+      308,
+      888
+    ]
+  },
+  {
+    "group": "gan",
+    "field": "year_gan",
+    "sha": "2823716817434a02941b619004ab3e8904f559dbe70a0fbf6f2ecda50b6a0b3f",
+    "origin": "5-202602040403",
+    "box": [
+      91,
+      97,
+      119,
+      125
+    ],
+    "label": "丙",
+    "template_box": [
+      420,
+      860,
+      448,
+      888
+    ]
+  },
+  {
+    "group": "zhi",
+    "field": "year_zhi",
+    "sha": "f1af46a822aaac921c4f9351e0a906d2025fd23539bb4bfe28ebc2b280b71397",
+    "origin": "5-202602040403",
+    "box": [
+      91,
+      127,
+      119,
+      155
+    ],
+    "label": "午",
+    "template_box": [
+      560,
+      860,
+      588,
+      888
+    ]
+  },
+  {
+    "group": "zhi",
+    "field": "year_zhi",
+    "sha": "b672977316ad7f7dcfe3f59896a9e398c0d6c1af38b688520ae1c71e164fa4e2",
+    "origin": "5-202906151230",
+    "box": [
+      91,
+      127,
+      119,
+      155
+    ],
+    "label": "酉",
+    "template_box": [
+      700,
+      860,
+      728,
+      888
+    ]
+  }
+]

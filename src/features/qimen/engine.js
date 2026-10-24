@@ -206,10 +206,11 @@ const computeQiMen = (yStr, mStr, dStr, hStr, juSetting, system, minuteStr = '0'
   const hGanIndex = (dGanIndex*2+hZhiIndex)%10;
 
   const aY=astroDate.getUTCFullYear(), aM=astroDate.getUTCMonth()+1, aD=astroDate.getUTCDate();
-  // 五種系統的顯示四柱均按實際輸入時分交節，日柱仍獨立採子初換日。
-  const timeCalendar = Solar.fromYmdHms(y,m,d,h,Number(minuteStr),0).getLunar();
+  // 子初先換日，交節也使用換日後的00時並保留分鐘。
+  // 例如立春在23時或次日00時時，不能讓年/月柱仍停留原日。
+  const timeCalendar = Solar.fromYmdHms(aY,aM,aD,Number(astroHStr),Number(minuteStr),0).getLunar();
   // 本輪實盤月家採交節整日的月柱起盤，與顯示四柱不同；23時推進日期。
-  // 年家則以實際立春時刻的年柱起盤，不能把月家的整日規則共用過去。
+  // 年家則以子初換日後時刻的立春年柱起盤，不能套月家的整日規則。
   const monthCalendar = system === '4' ? Solar.fromYmd(aY,aM,aD).getLunar() : null;
   const periodYear = monthCalendar ? monthCalendar.getYearInGanZhiByLiChun() : timeCalendar.getYearInGanZhiExact();
   const yGanIndex=GANS.indexOf(periodYear[0]), yZhiIndex=ZHIS.indexOf(periodYear[1]);
